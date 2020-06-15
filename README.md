@@ -1,2 +1,0 @@
-# InventoryMS
-Created with CodeSandbox
