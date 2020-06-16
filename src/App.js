@@ -12,9 +12,9 @@ export default function App() {
   const isSignUp = currentLocation.includes("signUp");
 
   return (
-    <Container>
+    <>
       <CustomNavBar />
-      <Row>
+      <Container>
         <Switch>
           <Col md={{ size: 6, offset: 3 }}>
             <Route path="/" exact component={Login} />
@@ -29,7 +29,7 @@ export default function App() {
             </Link>
           </Col>
         </Switch>
-      </Row>
-    </Container>
+      </Container>
+    </>
   );
 }
