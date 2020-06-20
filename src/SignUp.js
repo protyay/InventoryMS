@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { useHistory } from "react-router-dom";
 
 const SignUp = props => {
+   const history = useHistory();
+   const [state, setState] = useState({fName:''});
+
+  const redirectDashBoard = (event) => {
+    console.log('Redirecting to dashboard', event.target);
+    history.push("/dashboard", state);
+  }
+
+  const addToState = (event) => {
+    setState({fName:event.target.value})
+  }
+
   return (
     <Form action="#" className="mt-5">
       <FormGroup>
@@ -11,6 +24,7 @@ const SignUp = props => {
           name="fName"
           id="fName"
           placeholder="Enter First Name here"
+          onChange={addToState}
         />
       </FormGroup>
 
@@ -44,9 +58,10 @@ const SignUp = props => {
       </FormGroup>
 
       <div className="d-flex justify-content-center">
-        <Button color="success">Register</Button>
+        <Button color="success" onClick={redirectDashBoard}>Register</Button>
       </div>
     </Form>
   );
-};
+
+}
 export default SignUp;
