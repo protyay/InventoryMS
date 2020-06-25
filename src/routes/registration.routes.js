@@ -1,9 +1,8 @@
-module.exports = app => {
-    const userregistration = require("../controllers/registration.controller");
+const express = require('express')
+const router = new express.Router()
+const userregistration = require("../controllers/registration.controller.js");
 
-    var router = require("express").Router();
-    router.post("/", userregistration.create);
-
-    router.get("/",userregistration.findAll)
-    app.use('/ims/userregister', router);
-  };
+router.post("/createUser", userregistration.create);
+//router.get("/",userregistration.findAll)
+module.exports = router
+  

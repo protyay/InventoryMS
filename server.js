@@ -1,4 +1,4 @@
-const path = require("path");
+//const path = require('path')
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -9,10 +9,6 @@ var corsOptions = {
   origin: "http://localhost:3000"
 };
 
-// add middleware
-app.use(express.static(path.join(__dirname, "..", "build")));
-app.use(express.static("public"));
-
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
@@ -21,8 +17,17 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// const publicDirectoryPath   =  path.join(__dirname,'/public')
+// const viewsPath             =  path.join(__dirname,'/public/views')
 
-const db = require('./src/models/dbIndex');
+// app.set('view engine','hbs')
+// app.set('views',viewsPath)
+
+//Set up Static Views Location
+//app.use(express.static(publicDirectoryPath))
+
+
+const db = require("./src/models");
 db.sequelize.sync();
 
 // db.sequelize.sync({ force: true }).then(() => {
@@ -30,9 +35,22 @@ db.sequelize.sync();
 // });
 
 // route
-require("./src/routes/registration.routes")(app);
 
+const login = require('./src/routes/login.routes')
+const register = require('./src/routes/registration.routes')
+const customer =require("./src/routes/customer.routes") 
+//const viewRouters = require("./src/routes/view.routes") 
 
+app.use(login)
+app.use(register)
+app.use(customer)
+
+//app.use(viewRouters)
+
+// app.get('/customer',(req,res)=>{
+//   res.render('customerrecords')
+// })
+  
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
