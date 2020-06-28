@@ -1,7 +1,7 @@
 module.exports = {
     DB: 'imsdev',
     USER: 'root',
-    PASSWORD: 'qglvNvF447J4i5Io',
+    PASSWORD: '',
     HOST: '35.238.206.80',
     dialect: 'mysql',
     pool: {
