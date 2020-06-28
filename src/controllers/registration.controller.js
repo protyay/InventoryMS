@@ -3,10 +3,10 @@ const UserRegister = db.userregistration;
 
 exports.create = async(req, res) => {
   try{
-    const user = await UserRegister.create(req.body)
-    res.status(201).send(user)
+    const user = await UserRegister.create(req.body);
+    res.status(201).send(user);
    }catch(err){
-    res.status(500).send(err)
+    res.status(500).send(err);
   }
 }
 

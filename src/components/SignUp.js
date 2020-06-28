@@ -4,16 +4,31 @@ import { useHistory } from "react-router-dom";
 
 const SignUp = props => {
   const history = useHistory();
-  const [state, setState] = useState({ fName: '' });
+  const [state, setState] = useState({ firstName: '',lastName:'',email:'',password:''});
 
-  const redirectDashBoard = (event) => {
-    console.log('Redirecting to dashboard', event.target);
+  const redirectUser = () => {
     history.push("/dashboard", state);
   }
 
   const addToState = (event) => {
     setState({ fName: event.target.value });
   }
+  const saveUser = async() => {
+    const requestOptions = {
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body:JSON.stringify(state)
+    };
+     console.log('Sending request .', state);
+     const createUser = await fetch("/api/createUser",requestOptions);
+     const response = await createUser.json();
+     if(response){
+       redirectUser();
+     }
+  }
+  
 
   return (
     <Row>
@@ -26,7 +41,7 @@ const SignUp = props => {
               name="fName"
               id="fName"
               placeholder="Enter First Name here"
-              onChange={addToState}
+              onChange={(event) => setState({...state, firstName:event.target.value})}
             />
           </FormGroup>
 
@@ -37,6 +52,7 @@ const SignUp = props => {
               name="lName"
               id="lName"
               placeholder="Enter Last Name here"
+              onChange={(event) => setState({...state, lastName:event.target.value})}
             />
           </FormGroup>
 
@@ -47,6 +63,7 @@ const SignUp = props => {
               name="email"
               id="userEmail"
               placeholder="Enter your Email"
+              onChange={(event) => setState({...state, email:event.target.value})}
             />
           </FormGroup>
           <FormGroup>
@@ -56,11 +73,12 @@ const SignUp = props => {
               name="password"
               id="password"
               placeholder="Enter password here"
+              onChange={(event) => setState({...state, password:event.target.value})}
             />
           </FormGroup>
 
           <div className="d-flex justify-content-center">
-            <Button color="success" onClick={redirectDashBoard}>Register</Button>
+            <Button color="success" onClick={saveUser}>Register</Button>
           </div>
         </Form>
       </Col>
