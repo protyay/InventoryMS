@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import AddCustomerform from './AddCustomerForm';
 
@@ -15,15 +15,25 @@ export default function ContentArea() {
     const showAlertOnSave = () => {
         setShowAlert(true);
     }
+    const onDismiss = () => setShowAlert(false);
+
+    const fetchFromServer = async function testNodeFetchAPI() {
+        const testGreeting = await fetch("/api/greeting");
+        const jsonResponse = await testGreeting.json();
+        console.log(jsonResponse);
+    }
+    useEffect(() => {
+        fetchFromServer();
+    });
 
 
     return (
         <div className="w-2/3 justify-center">
             <div>
                 <h1 className="text-2xl font-medium text-green-600">Welcome User</h1>
-                {showAlert && 
-                <Alert color="primary">
-                    Customer Saved
+                {showAlert &&
+                    <Alert color="primary" toggle={onDismiss}>
+                        Customer Saved Successfully
                 </Alert>}
             </div>
 
@@ -32,7 +42,7 @@ export default function ContentArea() {
                 <Modal isOpen={modal} toggle={toggle}>
                     <ModalHeader toggle={toggle}>Add Customer</ModalHeader>
                     <ModalBody>
-                        <AddCustomerform/>
+                        <AddCustomerform />
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={showAlertOnSave}>Save</Button>

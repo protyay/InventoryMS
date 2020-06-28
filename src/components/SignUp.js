@@ -12,7 +12,7 @@ const SignUp = props => {
   }
 
   const addToState = (event) => {
-    setState({ fName: event.target.value })
+    setState({ fName: event.target.value });
   }
 
   return (

@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 
-export default function AddCustomerform(props) {
+export default function AddCustomerform() {
 
-    const [state, setState] = useState({
-        customerName: '', contactPerson: '',
+    const [customerDetailsState, setCustomerDetailsState] = useState({
+        custName: '', contactPerson: '',
         contactNum: '', address: '', email: '', gstin: '', status: ''
     });
-
-    const addToState = (event) => {
-        setState({ ...state, fName: event.target.value });
-    };
 
     return (
         <Row>
@@ -25,20 +21,20 @@ export default function AddCustomerform(props) {
                                     type="text"
                                     name="custName"
                                     id="custName"
-                                    placeholder="CustomerName"
-                                    onChange={addToState}
+                                    placeholder="Enter Customer Name"
+                                    onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, custName: e.target.value })}
                                 />
                             </FormGroup>
                         </Col>
                         <Col md={{ size: 5, offset: 1 }}>
                             <FormGroup>
-                                <Label for="conPerson">Contact Person</Label>
+                                <Label for="contactPerson">Contact Person</Label>
                                 <Input
                                     type="text"
-                                    name="conPerson"
-                                    id="conPerson"
-                                    placeholder="Enter Contact Person here"
-                                    onChange={addToState}
+                                    name="contactPerson"
+                                    id="contactPerson"
+                                    placeholder="Enter Contact Person"
+                                    onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, contactPerson: e.target.value })}
                                 />
                             </FormGroup>
                         </Col>
@@ -53,7 +49,7 @@ export default function AddCustomerform(props) {
                                     name="contactNum"
                                     id="contactNum"
                                     placeholder="Enter Contact Num"
-                                    onChange={addToState}
+                                    onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, contactNum: e.target.value })}
                                 />
                             </FormGroup>
                         </Col>
@@ -65,7 +61,7 @@ export default function AddCustomerform(props) {
                                     name="email"
                                     id="email"
                                     placeholder="Enter Contact Person here"
-                                    onChange={addToState}
+                                    onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, email: e.target.value })}
                                 />
                             </FormGroup>
                         </Col>
@@ -80,7 +76,7 @@ export default function AddCustomerform(props) {
                                     name="address"
                                     id="address"
                                     placeholder="Enter Address"
-                                    onChange={addToState}
+                                    onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, address: e.target.value })}
                                 />
                             </FormGroup>
                         </Col>
@@ -92,7 +88,7 @@ export default function AddCustomerform(props) {
                                     name="gstin"
                                     id="gstin"
                                     placeholder="Enter GSTIN"
-                                    onChange={addToState}
+                                    onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, gstin: e.target.value })}
                                 />
                             </FormGroup>
                         </Col>
