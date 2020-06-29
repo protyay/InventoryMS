@@ -1,32 +1,31 @@
 const db = require("../models");
-const UserRegister = db.userregistration;
+const User = db.user;
 const jwt   =   require('jsonwebtoken')
 
-exports.findOne = async(req,res) =>{
+
+exports.loginUser = async(req,res) =>{
     try{
         const email = req.body.email
         const password = req.body.password
-        const user = await UserRegister.findOne({where:{email}})
+        const user = await User.findOne({where:{email}})
         if(!user){
-            res.status(401).send({msg:'unable to login'})
+           return res.status(401).send({success : false,data :{}})         
         }else if (!await user.validPassword(password)) {
-            res.status(401).send({msg : 'unable to login'})
+          return  res.status(401).send({success : false,data : {}})
         }else{
             const token = await user.generateAuthToken()
-            res.send({user,token})
+            res.send({success:true,data :{token}})
         }
     }catch(err){
-        res.status(500).send(err)
+        res.status(500).send({success:false,data: err})
     }
 }
 
 exports.logoutUser = async(req,res)=>{
     try{
-       res.send({message: 'Logged Out Successfully',token:''})
+       res.send({success:true,data: {token:''}})
     }catch(err){
-        res.status(500).send(err)
+        res.status(500).send({success:false,data: err })
     }
-
-    
 }
 

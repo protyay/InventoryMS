@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt   =   require('jsonwebtoken')
 module.exports = (sequelize, Sequelize) => {
-    const UserRegistration = sequelize.define("registeruser", {
+    const User = sequelize.define("user", {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -37,15 +37,15 @@ module.exports = (sequelize, Sequelize) => {
       },
     }, {
       hooks : {
-          beforeCreate : (UserRegistration  ) => {
+          beforeCreate : (User  ) => {
               {
-                UserRegistration.password = UserRegistration.password && UserRegistration.password != "" ? bcrypt.hashSync(UserRegistration.password, 8) : "";
+                User.password = User.password && User.password != "" ? bcrypt.hashSync(User.password, 8) : "";
               }
           }
       }
     });
   
-   UserRegistration.prototype.toJSON = function(){
+   User.prototype.toJSON = function(){
 
     const userObject = Object.assign({},this.get())
     delete userObject.password
@@ -54,15 +54,15 @@ module.exports = (sequelize, Sequelize) => {
           
    }
 
-    UserRegistration.prototype.validPassword = async function(password) {
+    User.prototype.validPassword = async function(password) {
       return await bcrypt.compare(password, this.password)
   }
 
-  UserRegistration.prototype.generateAuthToken = function(){
+  User.prototype.generateAuthToken = function(){
     const user = this
     const token = jwt.sign({id:user.id.toString()},'thisisInventoryMSApp',{expiresIn: 3600})
     return token
   }
 
-    return UserRegistration;
+    return User;
   };

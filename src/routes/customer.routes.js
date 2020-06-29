@@ -4,12 +4,12 @@ const customers = require("../controllers/customer.controller.js");
 const auth = require('../middleware/auth')
 
  // Create a new Customer
- router.post("/createCustomer",auth, customers.create);
+ router.post("/customer",auth, customers.create);
 // Retrieve all Customers
-router.get("/findCustomers",auth,customers.findAll);
+router.get("/customers",auth,customers.findAll);
 // Retrieve a single customer with id
-router.get("/findCustomer/:id",auth, customers.findOne);
+router.get("/customers/customer/:id",auth, customers.findOne);
 // Update a Customer with id
-router.patch("/updateCustomer/:id",auth, customers.update);
+router.patch("/customer/:id",auth, customers.update);
 
 module.exports = router

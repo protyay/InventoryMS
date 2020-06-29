@@ -41,9 +41,9 @@ const register = require('./src/routes/registration.routes')
 const customer =require("./src/routes/customer.routes") 
 //const viewRouters = require("./src/routes/view.routes") 
 
-app.use(login)
-app.use(register)
-app.use(customer)
+app.use('/api',login)
+app.use('/api',register)
+app.use('/api',customer)
 
 //app.use(viewRouters)
 
