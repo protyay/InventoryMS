@@ -22,9 +22,9 @@ const SignUp = props => {
       body:JSON.stringify(state)
     };
      console.log('Sending request .', state);
-     const createUser = await fetch("/api/createUser",requestOptions);
+     const createUser = await fetch("/api/user/new",requestOptions);
      const response = await createUser.json();
-     if(response){
+     if(response.success === true){
        redirectUser();
      }
   }
@@ -32,8 +32,9 @@ const SignUp = props => {
 
   return (
     <Row>
-      <Col md={{ size: 3, offset: 5 }}>
-        <Form action="#" className="mt-5">
+      <Col md={{ size: 3, offset: 4 }}>
+      <div class="w-full max-w-xs">
+        <Form action="#" className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <FormGroup>
             <Label for="fName">First Name</Label>
             <Input
@@ -76,11 +77,11 @@ const SignUp = props => {
               onChange={(event) => setState({...state, password:event.target.value})}
             />
           </FormGroup>
-
           <div className="d-flex justify-content-center">
-            <Button color="success" onClick={saveUser}>Register</Button>
+            <Button color="info" onClick={saveUser}>Register</Button>
           </div>
         </Form>
+        </div>
       </Col>
 
     </Row>
