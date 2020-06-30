@@ -1,4 +1,5 @@
-import 'dotenv/config';
+const dotenv = require("dotenv");
+dotenv.config();
 
 module.exports = {
     DB: 'imsdev',
