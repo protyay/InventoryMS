@@ -1,9 +1,8 @@
 module.exports = {
-    DB: 'inventorymsdev',
-    USER: 'imsdev',
-    PASSWORD: 'InventoryMS@11',
-    HOST: 'db4free.net',
-    PORT:'3306',
+    DB: 'imsdev',
+    USER: 'root',
+    PASSWORD: 'qglvNvF447J4i5Io',
+    HOST: '35.238.206.80',
     dialect: 'mysql',
     pool: {
       max: 5,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import AddCustomerform from './AddCustomerForm';
 
@@ -17,14 +17,6 @@ export default function ContentArea() {
     }
     const onDismiss = () => setShowAlert(false);
 
-    const fetchFromServer = async function testNodeFetchAPI() {
-        const testGreeting = await fetch("/api/greeting");
-        const jsonResponse = await testGreeting.json();
-        console.log(jsonResponse);
-    }
-    useEffect(() => {
-        fetchFromServer();
-    });
 
 
     return (
