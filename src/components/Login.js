@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 const Login = props => {
   return (
     <Row>
-      <Col md={{ size: 6, offset: 3 }}>
-        <Form action="#" className="mt-5">
-          <FormGroup>
+      <Col md={{ size: 6, offset: 4 }}>
+      <div class="w-full max-w-xs">
+        <Form action="#" className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <FormGroup class="mb-4">
             <Label for="userEmail">Email</Label>
             <Input
               type="email"
@@ -16,7 +17,7 @@ const Login = props => {
               placeholder="Enter your Email"
             />
           </FormGroup>
-          <FormGroup>
+          <FormGroup class="mb-6">
             <Label for="password">Password</Label>
             <Input
               type="password"
@@ -27,12 +28,15 @@ const Login = props => {
           </FormGroup>
 
           <div className="d-flex justify-content-center">
-            <Button color="success">Login</Button>
+            <Button color="primary">Login</Button>
           </div>
+          <Link to="/signUp">
+            <Button color="link" className="btn-block mt-5">SignUp</Button>
+          </Link>
         </Form>
-        <Link to="/signUp">
-          <Button color="primary" className="btn-block mt-5">SignUp</Button>
-        </Link>
+        
+        </div>
+        
       </Col>
     </Row>
 

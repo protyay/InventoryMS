@@ -1,12 +1,12 @@
 const db = require("../models");
-const UserRegister = db.userregistration;
+const User = db.user;
 
 exports.create = async(req, res) => {
   try{
-    const user = await UserRegister.create(req.body);
-    res.status(201).send(user);
+    const user = await User.create(req.body)
+    res.status(201).send({success:true,data:user.email})
    }catch(err){
-    res.status(500).send(err);
+    res.status(500).send({success:false,data:err})
   }
 }
 

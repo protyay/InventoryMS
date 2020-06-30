@@ -18,7 +18,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.userregistration = require("./registration.model.js")(sequelize, Sequelize);
+db.user = require("./user.model.js")(sequelize, Sequelize);
 db.customer = require("./customer.model.js")(sequelize, Sequelize);
 db.visits = require("./custvisit.model.js")(sequelize, Sequelize);
 

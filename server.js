@@ -39,21 +39,21 @@ db.sequelize.sync();
 const login = require('./src/routes/login.routes')
 const register = require('./src/routes/registration.routes')
 const customer =require("./src/routes/customer.routes") 
+//const viewRouters = require("./src/routes/view.routes") 
 
-app.use(login)
-app.use(register)
-app.use(customer)
+app.use('/api',login)
+app.use('/api',register)
+app.use('/api',customer)
 
+//app.use(viewRouters)
 
-app.get('/api/greeting',(req,res)=>{
-  const name = req.query.name || 'World';
-  res.setHeader('Content-Type', 'application/json');
-  res.json({ greeting: `Hello ${name}!` });
-});
+// app.get('/customer',(req,res)=>{
+//   res.render('customerrecords')
+// })
   
 
 // set port, listen for requests
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
