@@ -30,7 +30,7 @@ export default function ContentArea() {
     return (
         <div className="w-2/3 justify-center">
             <div>
-                <h1 className="text-2xl font-medium text-green-600">Welcome User</h1>
+                <h1 className="text-2xl font-medium text-blue-500">Welcome User</h1>
                 {showAlert &&
                     <Alert color="primary" toggle={onDismiss}>
                         Customer Saved Successfully
@@ -50,16 +50,16 @@ export default function ContentArea() {
                     </ModalFooter>
                 </Modal>
             </div>}
-            <div className="mt-5">
-                <div className="flex justify-end">
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={addCustomerBtn}>Add Customer</button>
-                </div>
-                <div className="my-5">
-                    <h1 className="text-xl font-bold text-blue-400">Customer Records</h1>
-                    <table className="border rounded mt-4">
-                        <thead className="border border-blue-300">
+            <div className="flex justify-center">
+                <div class="px-2 py-20 w-full">
+                    <div class="flex justify-end">
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={addCustomerBtn}>Add Customer</button>
+                    </div>
+                    <h1 className="text-xl font-bold text-blue-500">Customer Records</h1>
+                    <table className="table-auto border-collapse border-4 border-blue-900">
+                        <thead>
                             <tr>
-                                <th className="font-mono text-lg text-purple-500 px-3 border-r-2">Customer Code</th>
+                                <th className="font-mono text-lg text-purple-500 px-3 border-r-2" >Customer Code</th>
                                 <th className="font-mono text-lg text-purple-500 px-3 border-r-2">Customer Name</th>
                                 <th className="font-mono text-lg text-purple-500 px-3 border-r-2">Contact Person</th>
                                 <th className="font-mono text-lg text-purple-500 px-3 border-r-2">Contact Number</th>
@@ -67,25 +67,34 @@ export default function ContentArea() {
                                 <th className="font-mono text-lg text-purple-500 px-3 border-r-2">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="border border-gray-600">
-                            {/* <tr>
+                        <tbody>
+                             <tr>
 
                                 <td className="text-center border-r-2">Mark</td>
                                 <td className="text-center border-r-2">Otto</td>
                                 <td className="text-center border-r-2">@mdo</td>
+                                <td className="text-center border-r-2">@mdo</td>
+                                <td className="text-center border-r-2">@mdo</td>
+                                <td className="text-center border-r-2">@mdo</td>
                             </tr>
                             <tr>
 
-                                <td className="text-center border-r-2">Jacob</td>
-                                <td className="text-center border-r-2">Thornton</td>
-                                <td className="text-center text-wrap border-r-2">@fat</td>
+                            <td className="text-center border-r-2">Mark</td>
+                                <td className="text-center border-r-2">Otto</td>
+                                <td className="text-center border-r-2">@mdo</td>
+                                <td className="text-center border-r-2">@mdo</td>
+                                <td className="text-center border-r-2">@mdo</td>
+                                <td className="text-center border-r-2">@mdo</td>
                             </tr>
                             <tr>
 
-                                <td className="text-center border-r-2">Larry</td>
-                                <td className="text-center border-r-2">the Bird</td>
-                                <td className="text-center border-r-2">@twitter</td>
-                            </tr> */}
+                            <td className="text-center border-r-2">Mark</td>
+                                <td className="text-center border-r-2">Otto</td>
+                                <td className="text-center border-r-2">@mdo</td>
+                                <td className="text-center border-r-2">@mdo</td>
+                                <td className="text-center border-r-2">@mdo</td>
+                                <td className="text-center border-r-2">@mdo</td>
+                            </tr> 
                         </tbody>
                     </table>
                 </div>
