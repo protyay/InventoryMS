@@ -1,8 +1,10 @@
+import 'dotenv/config';
+
 module.exports = {
     DB: 'imsdev',
-    USER: 'root',
-    PASSWORD: 'qglvNvF447J4i5Io',
-    HOST: '35.238.206.80',
+    USER: process.env.DB_USER_NAME,
+    PASSWORD: process.env.DB_PASSWORD,
+    HOST: process.env.DB_HOST,
     dialect: 'mysql',
     pool: {
       max: 5,
