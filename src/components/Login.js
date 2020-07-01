@@ -31,7 +31,7 @@ const Login = props => {
         },3000)
       }
       else{
-        history.push('/dashboard', loginDetails.email);
+        history.push('/dashboard', loginResponse.data.userName);
       }
 
     }
