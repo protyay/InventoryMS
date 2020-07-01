@@ -17,12 +17,12 @@ export default function ContentArea(props) {
     }
     const onDismiss = () => setShowAlert(false);
 
-
+   
 
     return (
         <div className="w-2/3 justify-center">
             <div>
-                <h1 className="text-2xl font-medium text-green-600">Welcome User</h1>
+                <h1 className="text-2xl font-medium text-green-600">Welcome {props.loggedInUser}</h1>
                 {showAlert &&
                     <Alert color="primary" toggle={onDismiss}>
                         Customer Saved Successfully
