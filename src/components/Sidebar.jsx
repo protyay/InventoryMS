@@ -3,13 +3,11 @@ import React from 'react';
 
 export default function Sidebar() {
   return (
-    <div className="w-1/5">
-      <div className="w-1/2 bg-gray-400">
-        <ul className="h-screen">
-          <li className="border-2 border-gray-200 text-md text-black-400 hover:text-blue-600 py-2 text-center">Customer</li>
-          <li className="border-2 border-gray-200 text-md text-black-400 hover:text-blue-600 py-2 text-center">Products</li>
-          <li className="border-2 border-gray-200 text-md text-black-400 hover:text-blue-600 py-2 text-center">Inventory</li>
-        </ul>
+    <div class="flex mb-4 justify-start w-1/4">
+     <div className="mt-0 w-48 h-screen bg-blue-100 rounded-lg">
+        <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-indigo-500 hover:text-white">Customer</a>
+        <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-indigo-500 hover:text-white">Inventory</a>
+        <a href="#" class="block px-4 py-2 text-gray-600 hover:bg-indigo-500 hover:text-white">Purchase Order</a>
       </div>
     </div>
   );

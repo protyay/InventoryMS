@@ -33,8 +33,8 @@ const SignUp = props => {
   return (
     <Row>
       <Col md={{ size: 3, offset: 4 }}>
-      <div class="w-full max-w-xs">
-        <Form action="#" className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <div class="w-full max-w-xs pt-10">
+        <Form action="#" className="bg-blue-100 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-4">
           <FormGroup>
             <Label for="fName">First Name</Label>
             <Input
