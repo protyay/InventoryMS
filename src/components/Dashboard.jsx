@@ -3,20 +3,18 @@ import '../styles/app.css';
 import ContentArea from './ContentArea';
 import Sidebar from './Sidebar';
 
-class Dashboard extends React.Component {
+function Dashboard(props) {
 
-  render() {
-    return (
+  return (
 
-      <div className="flex max-w-full mt-3" id="wrapper">
+    <div className="flex max-w-full mt-3" id="wrapper">
 
-        <Sidebar />
-        <ContentArea />
-      </div>
-    );
-  }
-
+      <Sidebar />
+      <ContentArea />
+    </div>
+  );
 }
+
 export default Dashboard;
 
 

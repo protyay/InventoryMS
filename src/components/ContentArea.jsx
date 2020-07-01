@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import AddCustomerform from './AddCustomerForm';
 
-export default function ContentArea() {
+export default function ContentArea(props) {
 
     const [modal, setModal] = useState(false);
     const [showAlert, setShowAlert] = useState(false);

@@ -1,3 +1,4 @@
+import { useHistory } from "react-router-dom";
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, Row, Col, FormFeedback, Alert } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -6,9 +7,10 @@ const _ = require('lodash');
 const Login = props => {
 
   const [loginDetails, setLoginDetails] = useState({ email: '', password: '', handlerClicked: false, inputInvalidText: '' });
-  const [errorDetails, setErrorDetails] = useState({hasError:false, errorMessage:''});
+  const [errorDetails, setErrorDetails] = useState({hasError:false, errorMessage:'', alertOpen: false});
+  const history = useHistory();
 
-  async function handleLogin(event) {
+  async function handleLogin() {
     setLoginDetails({ ...loginDetails, handlerClicked: true });
     if (!_.isEmpty(loginDetails.email) && !_.isEmpty(loginDetails.password)) {
       const postOptions = {
@@ -23,7 +25,13 @@ const Login = props => {
 
       console.log('Response from Login API', loginResponse);
       if(!loginResponse.success){
-        setErrorDetails({errorMessage:loginResponse.error.reason, hasError:true});
+        setErrorDetails({errorMessage:loginResponse.error.reason, hasError:true, alertOpen:true});
+        window.setTimeout(()=>{
+          setErrorDetails({...errorDetails, alertOpen: false});
+        },3000)
+      }
+      else{
+        history.push('/dashboard', loginDetails.email);
       }
 
     }
@@ -63,7 +71,7 @@ const Login = props => {
               <Button color="primary" onClick={handleLogin}>Login</Button>
             </div>
             {errorDetails.hasError && <div className="my-3 mx-2">
-            <Alert color="danger">
+            <Alert color="danger" isOpen={errorDetails.alertOpen}>
                 {errorDetails.errorMessage}
               </Alert>
             </div>}
