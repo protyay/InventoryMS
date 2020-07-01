@@ -9,6 +9,7 @@
     "body-parser": "^1.19.0",
     "bootstrap": "4.5.0",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.4",
     "jsonwebtoken": "^8.5.1",
@@ -38,7 +39,7 @@
     "start-server": "node server.js",
     "build:css": "postcss src/styles/tailwind.css -o src/styles/app.css",
     "watch:css": "postcss src/styles/tailwind.css -o src/styles/app.css -w",
-    "start":"run-p start-client start-server"
+    "start": "run-p start-client start-server"
   },
   "browserslist": [
     ">0.2%",

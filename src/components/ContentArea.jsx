@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import AddCustomerform from './AddCustomerForm';
 
@@ -17,14 +17,6 @@ export default function ContentArea() {
     }
     const onDismiss = () => setShowAlert(false);
 
-    const fetchFromServer = async function testNodeFetchAPI() {
-        const testGreeting = await fetch("/api/greeting");
-        const jsonResponse = await testGreeting.json();
-        console.log(jsonResponse);
-    }
-    useEffect(() => {
-        fetchFromServer();
-    });
 
 
     return (
@@ -50,9 +42,9 @@ export default function ContentArea() {
                     </ModalFooter>
                 </Modal>
             </div>}
-            <div className="flex justify-center">
+            <div className="flex justify-center shrink-0">
                 <div class="px-2 py-20 w-full">
-                    <div class="flex justify-end">
+                    <div class="flex justify-end shrink-0">
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={addCustomerBtn}>Add Customer</button>
                     </div>
                     <h1 className="text-xl font-bold text-blue-500">Customer Records</h1>

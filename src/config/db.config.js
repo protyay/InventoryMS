@@ -1,9 +1,11 @@
+require('dotenv').config()
+
 module.exports = {
-    DB: 'inventorymsdev',
-    USER: 'imsdev',
-    PASSWORD: 'InventoryMS@11',
-    HOST: 'db4free.net',
-    PORT:'3306',
+    DB: 'imsdev',
+    USER: process.env.DB_USER_NAME,
+    PASSWORD: process.env.DB_PASSWORD,
+    HOST: process.env.DB_HOST,
+    PORT:process.env.DB_PORT,
     dialect: 'mysql',
     pool: {
       max: 5,
