@@ -1,5 +1,4 @@
 require('dotenv').config()
-
 module.exports = {
     DB: 'imsdev',
     USER: process.env.DB_USER_NAME,

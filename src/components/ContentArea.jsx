@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import AddCustomerform from './AddCustomerForm';
 
-export default function ContentArea() {
+export default function ContentArea(props) {
 
     const [modal, setModal] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
@@ -17,12 +17,12 @@ export default function ContentArea() {
     }
     const onDismiss = () => setShowAlert(false);
 
-
+   
 
     return (
         <div className="w-2/3 justify-center">
             <div>
-                <h1 className="text-2xl font-medium text-blue-500">Welcome User</h1>
+                <h1 className="text-2xl font-medium text-blue-600">Welcome {props.loggedInUser}</h1>
                 {showAlert &&
                     <Alert color="primary" toggle={onDismiss}>
                         Customer Saved Successfully
