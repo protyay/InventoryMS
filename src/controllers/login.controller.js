@@ -11,7 +11,7 @@ exports.loginUser = async(req,res) =>{
         if(!user){
            return res.status(401).send({success : false,data :{}})         
         }else if (!await user.validPassword(password)) {
-          return  res.status(401).send({success : false,data : {}})
+          return  res.status(401).send({success : false,error : {'reason':'Invalid Password. Please try again'}});
         }else{
             const token = await user.generateAuthToken()
             res.send({success:true,data :{token}})

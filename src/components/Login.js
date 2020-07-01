@@ -1,15 +1,32 @@
 import React, { useState } from "react";
-import { Button, Form, FormGroup, Label, Input, Row, Col, FormFeedback } from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, Row, Col, FormFeedback, Alert } from "reactstrap";
 import { Link } from "react-router-dom";
 const _ = require('lodash');
 
 const Login = props => {
 
   const [loginDetails, setLoginDetails] = useState({ email: '', password: '', handlerClicked: false, inputInvalidText: '' });
+  const [errorDetails, setErrorDetails] = useState({hasError:false, errorMessage:''});
 
-  function handleLogin(event) {
+  async function handleLogin(event) {
     setLoginDetails({ ...loginDetails, handlerClicked: true });
-    console.log(event);
+    if (!_.isEmpty(loginDetails.email) && !_.isEmpty(loginDetails.password)) {
+      const postOptions = {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify({ 'email': loginDetails.email, 'password': loginDetails.password })
+      }
+      const initiateLogin = await fetch('/api/user/session', postOptions);
+      const loginResponse = await initiateLogin.json();
+
+      console.log('Response from Login API', loginResponse);
+      if(!loginResponse.success){
+        setErrorDetails({errorMessage:loginResponse.error.reason, hasError:true});
+      }
+
+    }
   }
 
   return (
@@ -45,6 +62,11 @@ const Login = props => {
             <div className="d-flex justify-content-center">
               <Button color="primary" onClick={handleLogin}>Login</Button>
             </div>
+            {errorDetails.hasError && <div className="my-3 mx-2">
+            <Alert color="danger">
+                {errorDetails.errorMessage}
+              </Alert>
+            </div>}
             <Link to="/signUp">
               <Button color="link" className="btn-block mt-5">SignUp</Button>
             </Link>
