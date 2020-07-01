@@ -48,7 +48,7 @@ export default function ContentArea() {
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={addCustomerBtn}>Add Customer</button>
                     </div>
                     <h1 className="text-xl font-bold text-blue-500">Customer Records</h1>
-                    <table className="table-auto border-collapse border-4 border-blue-900">
+                    <table className="table-auto border-collapse border-2 bg-white shadow-md">
                         <thead>
                             <tr>
                                 <th className="font-mono text-lg text-purple-500 px-3 border-r-2" >Customer Code</th>

@@ -7,7 +7,7 @@ const Login = props => {
     <Row>
       <Col md={{ size: 6, offset: 4 }}>
       <div class="pt-20 w-full max-w-xs" >
-        <Form action="#" className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 border-4 border-blue-900">
+        <Form action="#" className="bg-blue-100 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-4">
           <FormGroup class="mb-4 ">
             <Label for="userEmail" >Email</Label>
             <Input

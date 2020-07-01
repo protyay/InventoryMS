@@ -15,7 +15,7 @@ const CustomNavBar = props => {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <Navbar className="bg-blue-900" expand="md">
+    <Navbar className="bg-blue-100" expand="md">
       <NavbarBrand href="/">InventoryMS</NavbarBrand>
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
