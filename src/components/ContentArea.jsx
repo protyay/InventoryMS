@@ -1,23 +1,16 @@
 import React, { useState } from 'react';
-import { Alert, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Alert } from 'reactstrap';
 import AddCustomerform from './AddCustomerForm';
 
 export default function ContentArea(props) {
 
-    const [modal, setModal] = useState(false);
+    const [addCustomerModal, setAddCustomerModal] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
-    const toggle = () => setModal(!modal);
-    const addCustomerBtn = (event) => {
-        // console.log("Event handler called from", event.target);
-        setModal(true);
-    }
     const showAlertOnSave = () => {
         setShowAlert(true);
     }
     const onDismiss = () => setShowAlert(false);
-
-   
 
     return (
         <div className="w-2/3 justify-center">
@@ -26,26 +19,15 @@ export default function ContentArea(props) {
                 {showAlert &&
                     <Alert color="primary" toggle={onDismiss}>
                         Customer Saved Successfully
-                </Alert>}
+                </Alert>
+                }
             </div>
 
-            {modal && <div>
-
-                <Modal isOpen={modal} toggle={toggle}>
-                    <ModalHeader toggle={toggle}>Add Customer</ModalHeader>
-                    <ModalBody>
-                        <AddCustomerform />
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={showAlertOnSave}>Save</Button>
-                        <Button color="secondary" onClick={() => setModal(false)}>Cancel</Button>
-                    </ModalFooter>
-                </Modal>
-            </div>}
+            {addCustomerModal && <div><AddCustomerform showSaveAlert={showAlertOnSave}/></div>}
             <div className="flex justify-center shrink-0">
-                <div class="px-2 py-20 w-full">
-                    <div class="flex justify-end shrink-0">
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={addCustomerBtn}>Add Customer</button>
+                <div className="px-2 py-20 w-full">
+                    <div className="flex justify-end shrink-0">
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => setAddCustomerModal(true)}>Add Customer</button>
                     </div>
                     <h1 className="text-xl font-bold text-blue-500">Customer Records</h1>
                     <table className="table-auto border-collapse border-2 bg-white shadow-md">
@@ -60,7 +42,7 @@ export default function ContentArea(props) {
                             </tr>
                         </thead>
                         <tbody>
-                             <tr>
+                            <tr>
 
                                 <td className="text-center border-r-2">Mark</td>
                                 <td className="text-center border-r-2">Otto</td>
@@ -71,7 +53,7 @@ export default function ContentArea(props) {
                             </tr>
                             <tr>
 
-                            <td className="text-center border-r-2">Mark</td>
+                                <td className="text-center border-r-2">Mark</td>
                                 <td className="text-center border-r-2">Otto</td>
                                 <td className="text-center border-r-2">@mdo</td>
                                 <td className="text-center border-r-2">@mdo</td>
@@ -80,13 +62,13 @@ export default function ContentArea(props) {
                             </tr>
                             <tr>
 
-                            <td className="text-center border-r-2">Mark</td>
+                                <td className="text-center border-r-2">Mark</td>
                                 <td className="text-center border-r-2">Otto</td>
                                 <td className="text-center border-r-2">@mdo</td>
                                 <td className="text-center border-r-2">@mdo</td>
                                 <td className="text-center border-r-2">@mdo</td>
                                 <td className="text-center border-r-2">@mdo</td>
-                            </tr> 
+                            </tr>
                         </tbody>
                     </table>
                 </div>
