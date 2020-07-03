@@ -6,9 +6,9 @@ const Op = db.Sequelize.Op;
 exports.create = async(req, res) => {
   try{
     const customer = await Customer.create(req.body)
-    res.status(201).send({success : true,data: customer.customerCode})
+    res.status(201).send({success : true,data:{customerCode: customer.customerCode}});
   }catch(err){
-    res.status(400).send({success:false,data : err})
+    res.status(500).send({success:false,error :{errorReason: "Error Occurred while saving"}});
   }
 }
 

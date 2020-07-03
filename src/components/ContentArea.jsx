@@ -6,20 +6,22 @@ export default function ContentArea(props) {
 
     const [addCustomerModal, setAddCustomerModal] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
+    const [alertContentDetails, setAlertContentDetails] = useState({success:false,message:''})
 
-    const showAlertOnSave = () => {
+    const showAlertOnSave = (success, message) => {
         setShowAlert(true);
+        setAlertContentDetails({success,message});
     }
-    const onDismiss = () => setShowAlert(false);
+    const dismissAlert = () => setShowAlert(false);
 
     return (
         <div className="w-2/3 justify-center">
             <div>
                 <h1 className="text-2xl font-medium text-blue-600">Welcome {props.loggedInUser}</h1>
                 {showAlert &&
-                    <Alert color="primary" toggle={onDismiss}>
-                        Customer Saved Successfully
-                </Alert>
+                    <Alert color={`${alertContentDetails.success ? "primary" : "danger"}`} toggle={dismissAlert}>
+                        {alertContentDetails.message}
+                    </Alert>
                 }
             </div>
 

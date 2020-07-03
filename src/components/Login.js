@@ -31,6 +31,7 @@ const Login = props => {
         },3000)
       }
       else{
+        localStorage.setItem('jwt', loginResponse.data.token);
         history.push('/dashboard', loginResponse.data.userName);
       }
 

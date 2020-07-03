@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 import getFetchOptions from '../util/fetchOptions';
@@ -5,30 +6,42 @@ import getFetchOptions from '../util/fetchOptions';
 export default function AddCustomerform(props) {
 
     const [customerDetailsState, setCustomerDetailsState] = useState({
-        customerName: '', contactPerson: '',
-        contactNumber: '', address: '', email: '', gstin: '', status: ''
+        customerName: '',
+        contactPerson: '',
+        contactNumber: '',
+        address: '',
+        email: '',
+        gstin: '',
+        status: ''
     });
 
-    const [modalState, setModalState] = useState(true);
+    const [modalOpen, setModalOpen] = useState(true);
 
     const saveCustomer = async () => {
         setCustomerDetailsState({ ...customerDetailsState, status: 'Active' });
-
-        const postFetchOptions = getFetchOptions('POST', customerDetailsState);
+        const token = localStorage.getItem('jwt');
+        if (isEmpty(token)) {
+            throw new Error('Jwt NOT available. Please check w/ Administrator.')
+        }
+        const postFetchOptions = getFetchOptions('POST', customerDetailsState, token);
         console.log(postFetchOptions);
         const initiateCustomerSave = await fetch('/api/customers', postFetchOptions);
         const customerSaveResponse = await initiateCustomerSave.json();
 
-        if (customerSaveResponse) {
+        if (customerSaveResponse.success) {
             console.log("Customer saved successfully with ID", customerSaveResponse);
-            props.showSaveAlert();
+            props.showSaveAlert(true, 'Customer saved successfully');
         }
-    }
+        else {
+            props.showSaveAlert(false, customerSaveResponse.error.errorReason);
+        }
+        setModalOpen(false);
+    };
 
     return (
         <Row>
             <Col md={{ size: 12 }}>
-                <Modal isOpen={modalState}>
+                <Modal isOpen={modalOpen}>
                     <ModalHeader >Add Customer</ModalHeader>
                     <ModalBody>
                         <Form action="#" className="mt-2">
@@ -117,7 +130,7 @@ export default function AddCustomerform(props) {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={saveCustomer}>Save</Button>
-                        <Button color="secondary" onClick={() => setModalState(false)}>Cancel</Button>
+                        <Button color="secondary" onClick={() => setModalOpen(false)}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
             </Col >
