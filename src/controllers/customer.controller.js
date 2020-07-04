@@ -31,7 +31,7 @@ exports.findOne = async(req, res) => {
     const customerCode = req.params.id
     const customer = await Customer.findOne({where:{customerCode}})
     if(!customer){
-      return res.status(404).send({success:false,data:{}})
+      return res.status(404).send({success:false,error:{reason:'Invalid CustomerCode. Please try again'}});
     } 
    res.send({success:true,data:customer})
 }catch(err){
