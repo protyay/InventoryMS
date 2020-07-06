@@ -1,11 +1,12 @@
 import { isEmpty } from 'lodash';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 import getFetchOptions from '../util/fetchOptions';
+import { CustomerDetailsContext } from './componentStates/CustomerDetailsContext';
 
-export default function AddCustomerform(props) {
+export default function CustomerDetailsForm(props) {
 
-    const [customerDetailsState, setCustomerDetailsState] = useState({
+    let [customerDetailsState, setCustomerDetailsState] = useState({
         customerName: '',
         contactPerson: '',
         contactNumber: '',
@@ -15,25 +16,52 @@ export default function AddCustomerform(props) {
         status: ''
     });
 
+    const [customerEditDetails] = useContext(CustomerDetailsContext);
+    const [isEditAction, toggleIsEditAction] = props.isEditAction;
+
+
+    useEffect(() => {
+        if (isEditAction) {
+            setCustomerDetailsState({ ...customerEditDetails });
+        }
+    }, []);
+
+
     const [modalOpen, setModalOpen] = useState(true);
 
-    const saveCustomer = async () => {
-        setCustomerDetailsState({ ...customerDetailsState, status: 'Active' });
-        const token = localStorage.getItem('jwt');
-        if (isEmpty(token)) {
-            throw new Error('Jwt NOT available. Please check w/ Administrator.')
-        }
-        const postFetchOptions = getFetchOptions('POST', customerDetailsState, token);
-        console.log(postFetchOptions);
-        const initiateCustomerSave = await fetch('/api/customers', postFetchOptions);
-        const customerSaveResponse = await initiateCustomerSave.json();
+    const saveOrUpdateCustomer = async () => {
+        console.log(`${isEditAction} ? update : Add`, 'Final Customer state ', customerDetailsState);
+         // Add customer flow
+         const token = localStorage.getItem('jwt');
+         if (isEmpty(token)) {
+             throw new Error('Jwt NOT available. Please check w/ Administrator.')
+         }
+        if (isEditAction) {
+            // Update the customer
+            const patchFetchOptions = getFetchOptions('PATCH', customerDetailsState, token);
+            console.log(patchFetchOptions);
+            const initiateCustomerUpdate = await fetch(`/api/customers/${customerDetailsState.customerCode}`, patchFetchOptions);
+            const customerUpdateResponse = await initiateCustomerUpdate.json();
 
-        if (customerSaveResponse.success) {
-            console.log("Customer saved successfully with ID", customerSaveResponse);
-            props.showSaveAlert(true, 'Customer saved successfully');
+            if (customerUpdateResponse.success) {
+                props.showSaveAlert(true, customerUpdateResponse.data.message);
+            } else {
+                props.showSaveAlert(false, customerUpdateResponse.error.reason);
+            }
         }
         else {
-            props.showSaveAlert(false, customerSaveResponse.error.errorReason);
+            const postFetchOptions = getFetchOptions('POST', customerDetailsState, token);
+            console.log(postFetchOptions);
+            const initiateCustomerSave = await fetch('/api/customers', postFetchOptions);
+            const customerSaveResponse = await initiateCustomerSave.json();
+
+            if (customerSaveResponse.success) {
+                console.log("Customer saved successfully with ID", customerSaveResponse);
+                props.showSaveAlert(true, 'Customer saved successfully');
+            }
+            else {
+                props.showSaveAlert(false, customerSaveResponse.error.errorReason);
+            }
         }
         setModalOpen(false);
     };
@@ -54,6 +82,7 @@ export default function AddCustomerform(props) {
                                             name="custName"
                                             id="custName"
                                             placeholder="Enter Customer Name"
+                                            defaultValue={customerDetailsState.customerName}
                                             onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, customerName: e.target.value })}
                                         />
                                     </FormGroup>
@@ -66,6 +95,7 @@ export default function AddCustomerform(props) {
                                             name="contactPerson"
                                             id="contactPerson"
                                             placeholder="Enter Contact Person"
+                                            defaultValue={customerDetailsState.contactPerson}
                                             onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, contactPerson: e.target.value })}
                                         />
                                     </FormGroup>
@@ -81,6 +111,7 @@ export default function AddCustomerform(props) {
                                             name="contactNum"
                                             id="contactNum"
                                             placeholder="Enter Contact Num"
+                                            defaultValue={customerDetailsState.contactNumber}
                                             onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, contactNumber: e.target.value })}
                                         />
                                     </FormGroup>
@@ -93,6 +124,7 @@ export default function AddCustomerform(props) {
                                             name="email"
                                             id="email"
                                             placeholder="Enter Contact Person here"
+                                            defaultValue={customerDetailsState.email}
                                             onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, email: e.target.value })}
                                         />
                                     </FormGroup>
@@ -108,6 +140,7 @@ export default function AddCustomerform(props) {
                                             name="address"
                                             id="address"
                                             placeholder="Enter Address"
+                                            defaultValue={customerDetailsState.address}
                                             onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, address: e.target.value })}
                                         />
                                     </FormGroup>
@@ -120,6 +153,7 @@ export default function AddCustomerform(props) {
                                             name="gstin"
                                             id="gstin"
                                             placeholder="Enter GSTIN"
+                                            defaultValue={customerDetailsState.gstin}
                                             onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, gstin: e.target.value })}
                                         />
                                     </FormGroup>
@@ -129,8 +163,12 @@ export default function AddCustomerform(props) {
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={saveCustomer}>Save</Button>
-                        <Button color="secondary" onClick={() => setModalOpen(false)}>Cancel</Button>
+                        <Button color="primary" onClick={saveOrUpdateCustomer}>{`${isEditAction ? 'Update' : 'Save'}`}</Button>
+                        <Button color="secondary" onClick={() => {
+                            setModalOpen(false);
+                            props.setShowCustomerDetailsModal(false);
+                            isEditAction && toggleIsEditAction(false);
+                        }}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
             </Col >

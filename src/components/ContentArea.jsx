@@ -1,17 +1,26 @@
 import React, { useState } from 'react';
 import { Alert } from 'reactstrap';
-import AddCustomerform from './AddCustomerForm';
+import CustomerDetailsForm from './CustomerDetailsForm';
 import ShowCustomers from './ShowCustomers';
 
 export default function ContentArea(props) {
 
-    const [addCustomerModal, setAddCustomerModal] = useState(false);
+    const [showCustomerDetailsModal, setShowCustomerDetailsModal] = useState(false);
+    const [isCustomerEditAction, setIsCustomerEditAction] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertContentDetails, setAlertContentDetails] = useState({ success: false, message: '' });
 
     const showAlert = (success, message) => {
         setAlertVisible(true);
         setAlertContentDetails({ success, message });
+    };
+    
+    /**
+     * Initiate Edit Action. This set of statements should be executed before mounting CustomerFormDetails section
+     */
+    const initiateEditAction = () => {
+        setIsCustomerEditAction(true);
+        setShowCustomerDetailsModal(true);
     };
 
     const dismissAlert = () => setAlertVisible(false);
@@ -26,11 +35,11 @@ export default function ContentArea(props) {
                 }
             </div>
 
-            {addCustomerModal && <div><AddCustomerform showSaveAlert={showAlert} /></div>}
+            {showCustomerDetailsModal && <div><CustomerDetailsForm showSaveAlert={showAlert} isEditAction={[isCustomerEditAction, setIsCustomerEditAction]} setShowCustomerDetailsModal={setShowCustomerDetailsModal} /></div>}
             <div className="flex justify-end shrink-0">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => setAddCustomerModal(true)}>Add Customer</button>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => setShowCustomerDetailsModal(true)}>Add Customer</button>
             </div>
-            <ShowCustomers displayAlert={showAlert}/>
+            <ShowCustomers displayAlert={showAlert} initiateEditAction={initiateEditAction} />
         </div>
     )
 }

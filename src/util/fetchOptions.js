@@ -7,9 +7,12 @@ export default function getFetchOptions(method, body, token = '') {
     if (!isEmpty(authToken)) {
         headers['Authorization'] = authToken;
     }
-    return {
+    const fetchOptions ={
         method: `${method}`,
-        headers: headers,
-        body: JSON.stringify(body)
+        headers: headers
+    };
+    if(fetchOptions.method !== 'GET'){
+        fetchOptions['body'] =JSON.stringify(body);
     }
+    return fetchOptions;
 };

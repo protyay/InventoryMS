@@ -1,10 +1,26 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { AiFillEdit } from 'react-icons/ai';
 import { useTable } from 'react-table';
+import { CustomerDetailsContext } from './componentStates/CustomerDetailsContext';
 
 export default function ShowCustomers(props) {
 
     const [tableData, setTableData] = useState([]);
+    const [,setCurrentCustomerDetails] = useContext(CustomerDetailsContext);
+
+    const showCustomerDetails = async (event, cellProps) => {
+        console.log("Passed in cell Props ", cellProps);
+        const customerData = cellProps.data[cellProps.cell.row.id];
+        console.log('Clicked for Customer Data ', customerData);
+
+        // const fetchUrl = `/api/customers/customer/${customerCode}`;
+        // const fetchCustomerById = await fetch(fetchUrl, getFetchOptions('GET', null, localStorage.getItem('jwt')));
+        // const fetchCustomerByIdResponse = await fetchCustomerById.json();
+        // console.log("Fetched customer Object", fetchCustomerByIdResponse);
+
+        setCurrentCustomerDetails(customerData);
+        props.initiateEditAction();
+    };
 
     const columns = useMemo(() =>
         [
@@ -43,10 +59,10 @@ export default function ShowCustomers(props) {
                 columns: [
                     {
                         Header: 'Edit',
-                        Cell: props => <a href="#" className="inline-block align-items-center"><AiFillEdit /></a>
+                        Cell: props => <a href="#" className="inline-block align-items-center" onClick={(e) => showCustomerDetails(e, props)}><AiFillEdit /></a>
                     },
                     {
-                        Header: 'Deactivate',
+                        Header: 'Add Visit',
                         Cell: props => <a href="#" className="inline-block align-items-center"><AiFillEdit /></a>
                     }
                 ]
