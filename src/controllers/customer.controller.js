@@ -45,7 +45,7 @@ exports.update = async (req, res) => {
   const updatesAllowed = ['customerName', 'address', 'contactPerson', 'contactNumber', 'email', 'gstin']
   const isValidUpdate = updates.every((update) => updatesAllowed.includes(update))
   if (!isValidUpdate) {
-    return res.status(400).send({ success: false, error: { reason: 'Invalid Update query found' } });
+    return res.status(400).send({ success: false, error: { reason: 'Invalid Update query found' }});
   }
 
   try {

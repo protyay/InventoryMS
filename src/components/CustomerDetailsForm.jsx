@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import * as _ from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 import getFetchOptions from '../util/fetchOptions';
@@ -22,7 +22,9 @@ export default function CustomerDetailsForm(props) {
 
     useEffect(() => {
         if (isEditAction) {
-            setCustomerDetailsState({ ...customerEditDetails });
+            // Pick ONLY the required customer state to be used in the form
+            const customerNecessaryEditDetails = _.pick(customerEditDetails, ['customerName', 'address', 'contactPerson', 'contactNumber', 'email', 'gstin']);
+            setCustomerDetailsState({ ...customerNecessaryEditDetails });
         }
     }, []);
 
@@ -30,34 +32,37 @@ export default function CustomerDetailsForm(props) {
     const [modalOpen, setModalOpen] = useState(true);
 
     const saveOrUpdateCustomer = async () => {
-        console.log(`${isEditAction} ? update : Add`, 'Final Customer state ', customerDetailsState);
-         // Add customer flow
          const token = localStorage.getItem('jwt');
-         if (isEmpty(token)) {
+         if (_.isEmpty(token)) {
              throw new Error('Jwt NOT available. Please check w/ Administrator.')
          }
         if (isEditAction) {
             // Update the customer
             const patchFetchOptions = getFetchOptions('PATCH', customerDetailsState, token);
-            console.log(patchFetchOptions);
-            const initiateCustomerUpdate = await fetch(`/api/customers/${customerDetailsState.customerCode}`, patchFetchOptions);
+            
+            const initiateCustomerUpdate = await fetch(`/api/customers/${customerEditDetails.customerCode}`, patchFetchOptions);
             const customerUpdateResponse = await initiateCustomerUpdate.json();
-
+            
             if (customerUpdateResponse.success) {
                 props.showSaveAlert(true, customerUpdateResponse.data.message);
+                props.reloadCustomerTable(true);
+                props.setShowCustomerDetailsModal(false);
             } else {
                 props.showSaveAlert(false, customerUpdateResponse.error.reason);
             }
         }
         else {
+            // Else Add the customer
             const postFetchOptions = getFetchOptions('POST', customerDetailsState, token);
-            console.log(postFetchOptions);
+            
             const initiateCustomerSave = await fetch('/api/customers', postFetchOptions);
             const customerSaveResponse = await initiateCustomerSave.json();
 
             if (customerSaveResponse.success) {
                 console.log("Customer saved successfully with ID", customerSaveResponse);
                 props.showSaveAlert(true, 'Customer saved successfully');
+                props.setShowCustomerDetailsModal(false);
+                props.reloadCustomerTable(true);
             }
             else {
                 props.showSaveAlert(false, customerSaveResponse.error.errorReason);

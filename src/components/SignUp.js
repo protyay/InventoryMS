@@ -14,7 +14,7 @@ const SignUp = props => {
   const saveUser = async () => {
     setState({ ...state, registerClicked: true });
     if (_.isEmpty(state.firstName) || _.isEmpty(state.email) || _.isEmpty(state.password)) {
-      console.log('Error Alert');
+      // console.log('Error Alert');
       return;
     }
     if (state.password.length < 8) {
@@ -29,7 +29,7 @@ const SignUp = props => {
       },
       body: JSON.stringify(state)
     };
-    console.log('Sending request .', state);
+    // console.log('Sending request .', state);
     const createUser = await fetch("/api/user/new", requestOptions);
     const response = await createUser.json();
     if (response.success === true) {

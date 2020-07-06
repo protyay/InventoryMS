@@ -9,12 +9,13 @@ export default function ContentArea(props) {
     const [isCustomerEditAction, setIsCustomerEditAction] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertContentDetails, setAlertContentDetails] = useState({ success: false, message: '' });
+    const [shouldReloadCustomerTable, setShouldReloadCustomerTable] = useState(false);
 
     const showAlert = (success, message) => {
         setAlertVisible(true);
         setAlertContentDetails({ success, message });
     };
-    
+
     /**
      * Initiate Edit Action. This set of statements should be executed before mounting CustomerFormDetails section
      */
@@ -35,11 +36,17 @@ export default function ContentArea(props) {
                 }
             </div>
 
-            {showCustomerDetailsModal && <div><CustomerDetailsForm showSaveAlert={showAlert} isEditAction={[isCustomerEditAction, setIsCustomerEditAction]} setShowCustomerDetailsModal={setShowCustomerDetailsModal} /></div>}
+            {showCustomerDetailsModal &&
+                <div><CustomerDetailsForm showSaveAlert={showAlert}
+                    reloadCustomerTable={setShouldReloadCustomerTable}
+                    isEditAction={[isCustomerEditAction, setIsCustomerEditAction]}
+                    setShowCustomerDetailsModal={setShowCustomerDetailsModal} />
+                </div>}
+
             <div className="flex justify-end shrink-0">
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => setShowCustomerDetailsModal(true)}>Add Customer</button>
             </div>
-            <ShowCustomers displayAlert={showAlert} initiateEditAction={initiateEditAction} />
+            <ShowCustomers displayAlert={showAlert} initiateEditAction={initiateEditAction} shouldReload={shouldReloadCustomerTable} />
         </div>
     )
 }

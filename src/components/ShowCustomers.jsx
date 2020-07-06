@@ -6,17 +6,13 @@ import { CustomerDetailsContext } from './componentStates/CustomerDetailsContext
 export default function ShowCustomers(props) {
 
     const [tableData, setTableData] = useState([]);
-    const [,setCurrentCustomerDetails] = useContext(CustomerDetailsContext);
+    const [, setCurrentCustomerDetails] = useContext(CustomerDetailsContext);
+   
 
-    const showCustomerDetails = async (event, cellProps) => {
-        console.log("Passed in cell Props ", cellProps);
+    const showCustomerDetails = async (e, cellProps) => {
+        // console.log("Passed in cell Props ", cellProps);
         const customerData = cellProps.data[cellProps.cell.row.id];
-        console.log('Clicked for Customer Data ', customerData);
-
-        // const fetchUrl = `/api/customers/customer/${customerCode}`;
-        // const fetchCustomerById = await fetch(fetchUrl, getFetchOptions('GET', null, localStorage.getItem('jwt')));
-        // const fetchCustomerByIdResponse = await fetchCustomerById.json();
-        // console.log("Fetched customer Object", fetchCustomerByIdResponse);
+        // console.log('Clicked for Customer Data ', customerData);
 
         setCurrentCustomerDetails(customerData);
         props.initiateEditAction();
@@ -89,7 +85,7 @@ export default function ShowCustomers(props) {
             }
         });
         const fetchAllCustomersResponse = await fetchAllCustomers.json();
-        console.log(fetchAllCustomersResponse);
+        console.log("Customer Fetched", fetchAllCustomersResponse);
 
         if (fetchAllCustomersResponse.success) {
             setTableData(fetchAllCustomersResponse.data);
@@ -101,7 +97,7 @@ export default function ShowCustomers(props) {
 
     useEffect(() => {
         fetchAllCustomers();
-    }, [setTableData]);
+    }, [props]);
 
     return (
         <div className="flex justify-center shrink-0">
