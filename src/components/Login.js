@@ -1,14 +1,25 @@
 import { useHistory } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, FormGroup, Label, Input, Row, Col, FormFeedback, Alert } from "reactstrap";
 import { Link } from "react-router-dom";
+import Alertcomponent from "../customComponents/AlertComponent";
 const _ = require('lodash');
 
 const Login = props => {
 
   const [loginDetails, setLoginDetails] = useState({ email: '', password: '', handlerClicked: false, inputInvalidText: '' });
-  const [errorDetails, setErrorDetails] = useState({hasError:false, errorMessage:'', alertOpen: false});
+  const [errorDetails, setErrorDetails] = useState({ hasError: false, errorMessage: '', alertOpen: false });
+  const [registrationAlertMessage, setRegistrationAlertMessage] = useState(false);
   const history = useHistory();
+
+
+  useEffect(() => {
+
+    if (!_.isEmpty(props.location.state)) {
+      setRegistrationAlertMessage(true);
+    }
+
+  }, [])
 
   async function handleLogin() {
     setLoginDetails({ ...loginDetails, handlerClicked: true });
@@ -24,13 +35,13 @@ const Login = props => {
       const loginResponse = await initiateLogin.json();
 
       console.log('Response from Login API', loginResponse);
-      if(!loginResponse.success){
-        setErrorDetails({errorMessage:loginResponse.error.reason, hasError:true, alertOpen:true});
-        window.setTimeout(()=>{
-          setErrorDetails({...errorDetails, alertOpen: false});
-        },3000)
+      if (!loginResponse.success) {
+        setErrorDetails({ errorMessage: loginResponse.error.reason, hasError: true, alertOpen: true });
+        window.setTimeout(() => {
+          setErrorDetails({ ...errorDetails, alertOpen: false });
+        }, 3000)
       }
-      else{
+      else {
         localStorage.setItem('jwt', loginResponse.data.token);
         history.push('/dashboard', loginResponse.data.userName);
       }
@@ -41,6 +52,12 @@ const Login = props => {
   return (
     <Row>
       <Col md={{ size: 6, offset: 4 }}>
+        {registrationAlertMessage && props.location.state && <div className="w-1/2 pt-5">
+          <Alertcomponent
+            alertContentDetails={{ success: true, message: `Hello ${props.location.state.firstName}!. Your registration is successfull`}}
+            onDismiss={() => setRegistrationAlertMessage(false)} />
+
+        </div>}
         <div className="w-full max-w-xs pt-20">
           <Form action="#" className="bg-blue-100 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-4">
             <FormGroup className="mb-4">
@@ -51,7 +68,7 @@ const Login = props => {
                 name="email"
                 id="userEmail"
                 placeholder="Enter your Email"
-              Side  onChange={(event) => setLoginDetails({ ...loginDetails, email: event.target.value, handlerClicked: false })}
+                onChange={(event) => setLoginDetails({ ...loginDetails, email: event.target.value, handlerClicked: false })}
               />
               {loginDetails.handlerClicked && _.isEmpty(loginDetails.email) && <FormFeedback>Enter valid Email to proceed</FormFeedback>}
             </FormGroup>
@@ -72,7 +89,7 @@ const Login = props => {
               <Button color="primary" onClick={handleLogin}>Login</Button>
             </div>
             {errorDetails.hasError && <div className="my-3 mx-2">
-            <Alert color="danger" isOpen={errorDetails.alertOpen}>
+              <Alert color="danger" isOpen={errorDetails.alertOpen}>
                 {errorDetails.errorMessage}
               </Alert>
             </div>}
