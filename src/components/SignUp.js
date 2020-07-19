@@ -32,14 +32,14 @@ const SignUp = props => {
     // console.log('Sending request .', state);
     const createUser = await fetch("/api/user/new", requestOptions);
     const response = await createUser.json();
-    if (response.success === true) {
+    if (response.success) {
       redirectUser();
     }
   }
   return (
     <Row>
       <Col md={{ size: 3, offset: 4 }}>
-        <div class="w-full max-w-xs pt-10">
+        <div className="w-full max-w-xs pt-10">
           <Form action="#" className="bg-blue-100 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-4">
             <FormGroup>
               <Label for="fName">First Name</Label>

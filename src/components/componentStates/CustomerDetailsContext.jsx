@@ -3,7 +3,7 @@ import React, { createContext, useState } from 'react';
 export const CustomerDetailsContext = createContext();
 
 export const CustomerDetailsProvider = (props) => {
-    const [customerDetails, setCustomerDetails] = useState({
+    const [customerDetailsContextState, setCustomerDetailsContextState] = useState({
         customerName: '',
         contactPerson: '',
         contactNumber: '',
@@ -12,7 +12,7 @@ export const CustomerDetailsProvider = (props) => {
         gstin: ''
     });
     return (
-        <CustomerDetailsContext.Provider value={[customerDetails, setCustomerDetails]}>
+        <CustomerDetailsContext.Provider value={[customerDetailsContextState, setCustomerDetailsContextState]}>
             {props.children}
         </CustomerDetailsContext.Provider>
     )

@@ -6,7 +6,7 @@ import { CustomerDetailsContext } from './componentStates/CustomerDetailsContext
 
 export default function CustomerDetailsForm(props) {
 
-    let [customerDetailsState, setCustomerDetailsState] = useState({
+    const initialCustomerState = {
         customerName: '',
         contactPerson: '',
         contactNumber: '',
@@ -14,14 +14,17 @@ export default function CustomerDetailsForm(props) {
         email: '',
         gstin: '',
         status: ''
-    });
+    };
 
-    const [customerEditDetails] = useContext(CustomerDetailsContext);
+    const [customerDetailsState, setCustomerDetailsState] = useState(initialCustomerState);
+
+    const [customerEditDetails, setCustomerDetailsContextState] = useContext(CustomerDetailsContext);
     const [isEditAction, toggleIsEditAction] = props.isEditAction;
 
 
     useEffect(() => {
         if (isEditAction) {
+            console.log('Edit action triggered');
             // Pick ONLY the required customer state to be used in the form
             const customerNecessaryEditDetails = _.pick(customerEditDetails, ['customerName', 'address', 'contactPerson', 'contactNumber', 'email', 'gstin']);
             setCustomerDetailsState({ ...customerNecessaryEditDetails });
@@ -34,7 +37,7 @@ export default function CustomerDetailsForm(props) {
     const saveOrUpdateCustomer = async () => {
          const token = localStorage.getItem('jwt');
          if (_.isEmpty(token)) {
-             throw new Error('Jwt NOT available. Please check w/ Administrator.')
+             throw new Error('Jwt NOT available. Please check w/ Administrator.');
          }
         if (isEditAction) {
             // Update the customer
@@ -50,6 +53,7 @@ export default function CustomerDetailsForm(props) {
             } else {
                 props.showSaveAlert(false, customerUpdateResponse.error.reason);
             }
+            setCustomerDetailsContextState(initialCustomerState);
         }
         else {
             // Else Add the customer
