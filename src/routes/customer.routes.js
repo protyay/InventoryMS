@@ -10,6 +10,6 @@ router.get("/customers",auth,customers.findAll);
 // Retrieve a single customer with id
 router.get("/customers/customer/:id",auth, customers.findOne);
 // Update a Customer with id
-router.patch("/customer/:id",auth, customers.update);
+router.patch("/customer/:customerCode",auth, customers.update);
 
 module.exports = router

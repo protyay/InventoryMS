@@ -18,23 +18,14 @@ module.exports = (sequelize, Sequelize) => {
       },
       contactPerson: {
         type: Sequelize.STRING,
-        allowNull:false,
-        validate:{
-          is:/^[a-zA-Z-,]+(\s{0,1}[a-zA-Z-, ])*$/
-        }
-      },
+        allowNull:false
+     },
       contactNumber: {
         type: Sequelize.STRING,
-        allowNull:false,
-        validate:{
-          isNumeric: true
-        }
+        allowNull:false
       },
       email: {
         type: Sequelize.STRING,
-        validate:{
-          isEmail: true
-        }
       },
       gstin: {
         type: Sequelize.STRING

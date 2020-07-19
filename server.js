@@ -45,13 +45,6 @@ app.use('/api',login)
 app.use('/api',register)
 app.use('/api',customer)
 
-//app.use(viewRouters)
-
-// app.get('/customer',(req,res)=>{
-//   res.render('customerrecords')
-// })
-  
-
 // set port, listen for requests
 require('dotenv').config()
 const PORT = process.env.EXPRESS_SERVER_PORT;

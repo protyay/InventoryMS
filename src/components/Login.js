@@ -31,7 +31,8 @@ const Login = props => {
         },3000)
       }
       else{
-        history.push('/dashboard', loginDetails.email);
+        localStorage.setItem('jwt', loginResponse.data.token);
+        history.push('/dashboard', loginResponse.data.userName);
       }
 
     }
@@ -40,9 +41,9 @@ const Login = props => {
   return (
     <Row>
       <Col md={{ size: 6, offset: 4 }}>
-        <div class="w-full max-w-xs pt-20">
+        <div className="w-full max-w-xs pt-20">
           <Form action="#" className="bg-blue-100 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-4">
-            <FormGroup class="mb-4">
+            <FormGroup className="mb-4">
               <Label for="userEmail">Email</Label>
               <Input
                 invalid={loginDetails.handlerClicked && _.isEmpty(loginDetails.email)}
@@ -50,11 +51,11 @@ const Login = props => {
                 name="email"
                 id="userEmail"
                 placeholder="Enter your Email"
-                onChange={(event) => setLoginDetails({ ...loginDetails, email: event.target.value, handlerClicked: false })}
+              Side  onChange={(event) => setLoginDetails({ ...loginDetails, email: event.target.value, handlerClicked: false })}
               />
               {loginDetails.handlerClicked && _.isEmpty(loginDetails.email) && <FormFeedback>Enter valid Email to proceed</FormFeedback>}
             </FormGroup>
-            <FormGroup class="mb-6">
+            <FormGroup className="mb-6">
               <Label for="password">Password</Label>
               <Input
                 invalid={loginDetails.handlerClicked && _.isEmpty(loginDetails.password)}

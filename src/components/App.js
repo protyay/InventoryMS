@@ -1,9 +1,8 @@
 import React from "react";
-import { Container } from "reactstrap";
 import CustomNavBar from "./Navbar";
 import Login from "./Login";
 import SignUp from "./SignUp";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Dashboard from "./Dashboard";
 
 export default function App() {
