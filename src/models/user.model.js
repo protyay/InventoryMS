@@ -7,35 +7,23 @@ module.exports = (sequelize, Sequelize) => {
         autoIncrement: true,
         primaryKey: true
     },
-      firstName: {
+     firstName: {
         type: Sequelize.STRING,
-        allowNull:false,
-        validate: {
-          isAlpha: true
-        }
-      },
-      lastName: {
+        allowNull:false
+     },
+     lastName: {
         type: Sequelize.STRING,
-        validate: {
-          isAlpha: true,
-        }
      },
      email: {
         type: Sequelize.STRING,
         allowNull:false,
-        unique:true,
-         validate:{
-          isEmail: true
-        }
+        unique:true
       },
      password:{
         type: Sequelize.STRING,
-        allowNull:false,
-        validate:{
-          min: 8
-        }
-      },
-    }, {
+        allowNull:false
+    },
+    },{
       hooks : {
           beforeCreate : (User  ) => {
               {
@@ -60,7 +48,7 @@ module.exports = (sequelize, Sequelize) => {
 
   User.prototype.generateAuthToken = function(){
     const user = this
-    const token = jwt.sign({id:user.id.toString()},'thisisInventoryMSApp',{expiresIn: 3600})
+    const token = jwt.sign({id:user.id.toString()},process.env.JWT_SECRET,{expiresIn: 3600})
     return token
   }
 
