@@ -10,7 +10,7 @@ function Dashboard(props) {
     <div className="flex max-w-full mt-3" id="wrapper">
 
       <Sidebar />
-      <ContentArea loggedInUser = {props.location.state}/>
+      <ContentArea/>
     </div>
   );
 }

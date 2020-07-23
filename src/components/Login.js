@@ -1,8 +1,9 @@
 import { useHistory } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button, Form, FormGroup, Label, Input, Row, Col, FormFeedback, Alert } from "reactstrap";
 import { Link } from "react-router-dom";
 import Alertcomponent from "../customComponents/AlertComponent";
+import { AuthenticatedUserContext } from "./componentStates/LoggedInUserState";
 const _ = require('lodash');
 
 const Login = props => {
@@ -11,6 +12,9 @@ const Login = props => {
   const [errorDetails, setErrorDetails] = useState({ hasError: false, errorMessage: '', alertOpen: false });
   const [registrationAlertMessage, setRegistrationAlertMessage] = useState(false);
   const history = useHistory();
+  const userContext = useContext(AuthenticatedUserContext);
+
+  const {setLoggedInUserDetails} = userContext;
 
 
   useEffect(() => {
@@ -43,7 +47,7 @@ const Login = props => {
       }
       else {
         localStorage.setItem('jwt', loginResponse.data.token);
-        history.push('/dashboard', loginResponse.data.userName);
+        history.push('/dashboard', setLoggedInUserDetails({userName:loginResponse.data.userName}));
       }
 
     }

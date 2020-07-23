@@ -19,7 +19,7 @@ export default function CustomerDetailsForm(props) {
     const [customerDetailsState, setCustomerDetailsState] = useState(initialCustomerState);
 
     const [customerEditDetails, setCustomerDetailsContextState] = useContext(CustomerDetailsContext);
-    const [isEditAction, toggleIsEditAction] = props.isEditAction;
+    const [isEditAction, toggleEditAction] = props.isEditAction;
 
 
     useEffect(() => {
@@ -48,9 +48,11 @@ export default function CustomerDetailsForm(props) {
             
             if (customerUpdateResponse.success) {
                 props.showSaveAlert(true, customerUpdateResponse.data.message);
-                props.reloadCustomerTable(true);
+                props.reloadCustomerTable();
                 props.setShowCustomerDetailsModal(false);
             } else {
+                toggleEditAction(false);
+                props.setShowCustomerDetailsModal(false);
                 props.showSaveAlert(false, customerUpdateResponse.error.reason);
             }
             setCustomerDetailsContextState(initialCustomerState);
@@ -132,7 +134,7 @@ export default function CustomerDetailsForm(props) {
                                             type="email"
                                             name="email"
                                             id="email"
-                                            placeholder="Enter Contact Person here"
+                                            placeholder="Enter Email"
                                             defaultValue={customerDetailsState.email}
                                             onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, email: e.target.value })}
                                         />
@@ -176,7 +178,7 @@ export default function CustomerDetailsForm(props) {
                         <Button color="secondary" onClick={() => {
                             setModalOpen(false);
                             props.setShowCustomerDetailsModal(false);
-                            isEditAction && toggleIsEditAction(false);
+                            isEditAction && toggleEditAction(false);
                         }}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
