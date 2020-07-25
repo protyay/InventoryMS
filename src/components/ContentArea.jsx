@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Alert } from 'reactstrap';
 import CustomerDetailsForm from './CustomerDetailsForm';
 import ShowCustomers from './ShowCustomers';
+import { AuthenticatedUserContext } from './componentStates/LoggedInUserState';
 
 export default function ContentArea(props) {
 
@@ -9,7 +10,9 @@ export default function ContentArea(props) {
     const [isCustomerEditAction, setIsCustomerEditAction] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertContentDetails, setAlertContentDetails] = useState({ success: false, message: '' });
-    const [shouldReloadCustomerTable, setShouldReloadCustomerTable] = useState(false);
+    const [reloadCustomerTable, setReloadCustomerTable] = useState(false);
+
+    const {loggedInUserDetails} = useContext(AuthenticatedUserContext);
 
     const showAlert = (success, message) => {
         setAlertVisible(true);
@@ -28,7 +31,7 @@ export default function ContentArea(props) {
     return (
         <div className="w-2/3 justify-center">
             <div>
-                <h1 className="text-2xl font-medium text-blue-600">Welcome {props.loggedInUser}</h1>
+                <h1 className="text-2xl font-medium text-blue-600">Welcome {loggedInUserDetails.userName}</h1>
                 {alertVisible &&
                     <Alert color={`${alertContentDetails.success ? "primary" : "danger"}`} toggle={dismissAlert}>
                         {alertContentDetails.message}
@@ -38,7 +41,7 @@ export default function ContentArea(props) {
 
             {showCustomerDetailsModal &&
                 <div><CustomerDetailsForm showSaveAlert={showAlert}
-                    reloadCustomerTable={setShouldReloadCustomerTable}
+                    reloadCustomerTable={() => setReloadCustomerTable(!reloadCustomerTable)}
                     isEditAction={[isCustomerEditAction, setIsCustomerEditAction]}
                     setShowCustomerDetailsModal={setShowCustomerDetailsModal} />
                 </div>}
@@ -46,7 +49,7 @@ export default function ContentArea(props) {
             <div className="flex justify-end shrink-0">
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onClick={() => setShowCustomerDetailsModal(true)}>Add Customer</button>
             </div>
-            <ShowCustomers displayAlert={showAlert} initiateEditAction={initiateEditAction} shouldReload={shouldReloadCustomerTable} />
+            <ShowCustomers displayAlert={showAlert} initiateEditAction={initiateEditAction} shouldReload={reloadCustomerTable} />
         </div>
     )
 }

@@ -7,7 +7,8 @@ export default function ShowCustomers(props) {
 
     const [tableData, setTableData] = useState([]);
     const [, setCurrentCustomerDetails] = useContext(CustomerDetailsContext);
-   
+    const {shouldReload} = props;
+    
 
     const showCustomerDetails = async (e, cellProps) => {
         // console.log("Passed in cell Props ", cellProps);
@@ -86,7 +87,6 @@ export default function ShowCustomers(props) {
         });
         const fetchAllCustomersResponse = await fetchAllCustomers.json();
         console.log("Customer Fetched", fetchAllCustomersResponse);
-
         if (fetchAllCustomersResponse.success) {
             setTableData(fetchAllCustomersResponse.data);
         }
@@ -97,14 +97,14 @@ export default function ShowCustomers(props) {
 
     useEffect(() => {
         fetchAllCustomers();
-    }, [props]);
+    }, [shouldReload]);
 
     return (
         <div className="flex justify-center shrink-0">
             <div className="px-2 py-20 w-full">
 
                 <h1 className="text-xl font-bold text-blue-500">Customer Records</h1>
-
+<hr/>
 
                 <table className="table-auto border-collapse border-2 bg-white shadow-md" {...getTableProps()}>
                     <thead>
