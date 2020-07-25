@@ -10,12 +10,12 @@ const rootElement = document.getElementById("root");
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <CustomerDetailsProvider>
-        <AuthenticatedUserContextProvider>
+      <AuthenticatedUserContextProvider>
+        <CustomerDetailsProvider>
           <App />
-        </AuthenticatedUserContextProvider>
-      </CustomerDetailsProvider>
+        </CustomerDetailsProvider>
+      </AuthenticatedUserContextProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode >,
   rootElement
 );

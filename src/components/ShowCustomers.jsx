@@ -104,7 +104,7 @@ export default function ShowCustomers(props) {
             <div className="px-2 py-20 w-full">
 
                 <h1 className="text-xl font-bold text-blue-500">Customer Records</h1>
-
+<hr/>
 
                 <table className="table-auto border-collapse border-2 bg-white shadow-md" {...getTableProps()}>
                     <thead>
