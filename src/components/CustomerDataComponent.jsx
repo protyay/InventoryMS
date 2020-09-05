@@ -3,7 +3,7 @@ import {AiFillEdit} from 'react-icons/ai';
 import {useTable} from 'react-table';
 import {CustomerDetailsContext} from './componentStates/CustomerDetailsContext';
 
-export default function ShowCustomers(props) {
+export default function CustomerDataComponent(props) {
 
     const [tableData, setTableData] = useState([]);
     const [, setCurrentCustomerDetails] = useContext(CustomerDetailsContext);
