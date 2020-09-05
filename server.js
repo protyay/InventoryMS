@@ -30,20 +30,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = require("./src/models");
 db.sequelize.sync();
 
-// db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and re-sync db.");
-// });
+//  db.sequelize.sync({ force: true }).then(() => {
+//    console.log("Drop and re-sync db.");
+//  });
 
 // route
 
 const login = require('./src/routes/login.routes')
 const register = require('./src/routes/registration.routes')
 const customer =require("./src/routes/customer.routes") 
-//const viewRouters = require("./src/routes/view.routes") 
+const contacts = require("./src/routes/contacts.routes") 
 
 app.use('/api',login)
 app.use('/api',register)
 app.use('/api',customer)
+app.use('/api',contacts)
 
 // set port, listen for requests
 require('dotenv').config()
