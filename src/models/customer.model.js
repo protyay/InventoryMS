@@ -6,26 +6,23 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey: true
       },
       customerCode: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1
+        type: Sequelize.STRING,
+        allowNull:false,
+        unique:true
       },
       customerName: {
         type: Sequelize.STRING,
         allowNull:false
       },
-      address: {
+      state:{
+        type: Sequelize.STRING,
+        allowNull:false
+      },
+      officeAddress: {
         type: Sequelize.TEXT
       },
-      contactPerson: {
-        type: Sequelize.STRING,
-        allowNull:false
-     },
-      contactNumber: {
-        type: Sequelize.STRING,
-        allowNull:false
-      },
-      email: {
-        type: Sequelize.STRING,
+      factoryAddress: {
+        type: Sequelize.TEXT
       },
       gstin: {
         type: Sequelize.STRING

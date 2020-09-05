@@ -20,9 +20,9 @@ db.sequelize = sequelize;
 
 db.user = require("./user.model.js")(sequelize, Sequelize);
 db.customer = require("./customer.model.js")(sequelize, Sequelize);
-db.visits = require("./custvisit.model.js")(sequelize, Sequelize);
+db.contacts = require("./contacts.model.js")(sequelize, Sequelize);
 
-db.customer.hasMany(db.visits, {foreignKey: 'fk_customerid', sourceKey: 'customerId'});
-db.visits.belongsTo(db.customer, {foreignKey: 'fk_customerid', targetKey: 'customerId'});
+db.customer.hasMany(db.contacts, {foreignKey: 'fk_customerid', sourceKey: 'customerId'});
+db.contacts.belongsTo(db.customer, {foreignKey: 'fk_customerid', targetKey: 'customerId'});
 
 module.exports = db;
