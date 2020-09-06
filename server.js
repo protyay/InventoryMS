@@ -40,11 +40,13 @@ const login = require('./src/routes/login.routes')
 const register = require('./src/routes/registration.routes')
 const customer =require("./src/routes/customer.routes") 
 const contacts = require("./src/routes/contacts.routes") 
+const states = require("./src/routes/statemst.routes") 
 
 app.use('/api',login)
 app.use('/api',register)
 app.use('/api',customer)
 app.use('/api',contacts)
+app.use('/api',states)
 
 // set port, listen for requests
 require('dotenv').config()
