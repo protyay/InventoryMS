@@ -17,7 +17,6 @@ export default function CustomerDetailsForm(props) {
     };
 
     const [customerDetailsState, setCustomerDetailsState] = useState(initialCustomerState);
-
     const [customerEditDetails, setCustomerDetailsContextState] = useContext(CustomerDetailsContext);
     const [isEditAction, toggleEditAction] = props.isEditAction;
 
@@ -35,24 +34,23 @@ export default function CustomerDetailsForm(props) {
     const [modalOpen, setModalOpen] = useState(true);
 
     const saveOrUpdateCustomer = async () => {
-         const token = localStorage.getItem('jwt');
-         if (_.isEmpty(token)) {
-             throw new Error('Jwt NOT available. Please check w/ Administrator.');
-         }
+        const token = localStorage.getItem('jwt');
+        if (_.isEmpty(token)) {
+            throw new Error('Jwt NOT available. Please check w/ Administrator.');
+        }
         if (isEditAction) {
             // Update the customer
             const patchFetchOptions = getFetchOptions('PATCH', customerDetailsState, token);
-            
             const initiateCustomerUpdate = await fetch(`/api/customers/${customerEditDetails.customerCode}`, patchFetchOptions);
             const customerUpdateResponse = await initiateCustomerUpdate.json();
-            
+
             if (customerUpdateResponse.success) {
                 props.showSaveAlert(true, customerUpdateResponse.data.message);
                 props.reloadCustomerTable();
-                props.setShowCustomerDetailsModal(false);
+                toggleEditAction(false);
+
             } else {
                 toggleEditAction(false);
-                props.setShowCustomerDetailsModal(false);
                 props.showSaveAlert(false, customerUpdateResponse.error.reason);
             }
             setCustomerDetailsContextState(initialCustomerState);
@@ -60,20 +58,19 @@ export default function CustomerDetailsForm(props) {
         else {
             // Else Add the customer
             const postFetchOptions = getFetchOptions('POST', customerDetailsState, token);
-            
             const initiateCustomerSave = await fetch('/api/customers', postFetchOptions);
             const customerSaveResponse = await initiateCustomerSave.json();
 
             if (customerSaveResponse.success) {
                 console.log("Customer saved successfully with ID", customerSaveResponse);
                 props.showSaveAlert(true, 'Customer saved successfully');
-                props.setShowCustomerDetailsModal(false);
                 props.reloadCustomerTable(true);
             }
             else {
-                props.showSaveAlert(false, customerSaveResponse.error.errorReason);
+                props.showSaveAlert(false, customerSaveResponse.error.reason);
             }
         }
+        props.setShowCustomerDetailsModal(false);
         setModalOpen(false);
     };
 

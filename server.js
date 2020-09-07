@@ -5,8 +5,8 @@ const cors = require("cors");
 
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:3000"
+const corsOptions = {
+    origin: "http://localhost:3000"
 };
 
 app.use(cors(corsOptions));
@@ -15,7 +15,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 // const publicDirectoryPath   =  path.join(__dirname,'/public')
 // const viewsPath             =  path.join(__dirname,'/public/views')
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 const db = require("./src/models");
-db.sequelize.sync();
+db.sequelize.sync({force: true, logging:console.log});
 
 //  db.sequelize.sync({ force: true }).then(() => {
 //    console.log("Drop and re-sync db.");
@@ -52,5 +52,5 @@ app.use('/api',states)
 require('dotenv').config()
 const PORT = process.env.EXPRESS_SERVER_PORT;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+    console.log(`Server is running on port ${PORT}.`);
 });
