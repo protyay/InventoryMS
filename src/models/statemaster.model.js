@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const StateMst = sequelize.define("state_msts", {
+    const StateMst = sequelize.define("state_master", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,

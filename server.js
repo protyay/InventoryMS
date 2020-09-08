@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 const db = require("./src/models");
-db.sequelize.sync({force: true, logging:console.log});
+// db.sequelize.sync();
 
 //  db.sequelize.sync({ force: true }).then(() => {
 //    console.log("Drop and re-sync db.");
@@ -36,20 +36,20 @@ db.sequelize.sync({force: true, logging:console.log});
 
 // route
 
-const login = require('./src/routes/login.routes')
-const register = require('./src/routes/registration.routes')
-const customer =require("./src/routes/customer.routes") 
-const contacts = require("./src/routes/contacts.routes") 
-const states = require("./src/routes/statemst.routes") 
+const login = require('./src/routes/login.routes');
+const register = require('./src/routes/registration.routes');
+const customer = require("./src/routes/customer.routes");
+const contacts = require("./src/routes/contacts.routes");
+const states = require("./src/routes/statemaster.routes");
 
-app.use('/api',login)
-app.use('/api',register)
-app.use('/api',customer)
-app.use('/api',contacts)
-app.use('/api',states)
+app.use('/api', login);
+app.use('/api', register);
+app.use('/api', customer);
+app.use('/api', contacts);
+app.use('/api', states);
 
 // set port, listen for requests
-require('dotenv').config()
+require('dotenv').config();
 const PORT = process.env.EXPRESS_SERVER_PORT;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
