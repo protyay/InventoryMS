@@ -7,6 +7,6 @@ exports.findAll = async(req,res)=>{
         const states = await StateMst.findAll();
         res.send({ success: true, data: states });
     }catch(err){
-        res.status(500).send({ success: false, error: { reason: 'Error occurred while updating. Please try again' } });
+        res.status(500).send({ success: false, error: { reason: 'Error occurred . Please try again!' } });
     }
 }
