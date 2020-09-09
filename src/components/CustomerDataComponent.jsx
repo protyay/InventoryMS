@@ -24,7 +24,7 @@ export default function CustomerDataComponent(props) {
                     columns: [
                         {
                             Header: 'Customer Code',
-                            accessor: 'customerId'
+                            accessor: 'customerCode'
                         },
                         {
                             Header: 'Customer Name',
@@ -33,19 +33,29 @@ export default function CustomerDataComponent(props) {
                     ]
                 },
                 {
-                    Header: 'Address Details',
+                    Header: 'Company Details',
                     columns: [
                         {
-                            Header: 'Contact Person',
-                            accessor: 'contactPerson'
+                            Header: 'Office Address',
+                            accessor: 'officeAddress'
                         },
                         {
-                            Header: 'Contact Number',
-                            accessor: 'contactNumber'
+                            Header: 'Factory Address',
+                            accessor: 'factoryAddress'
                         },
                         {
-                            Header: 'Email',
-                            accessor: 'email'
+                            Header: 'GSTIN',
+                            accessor: 'gstin'
+                        }
+                        
+                    ]
+                },
+                {
+                    Header: 'Status',
+                    columns: [
+                        {
+                            Header: 'Active',
+                            accessor: 'customerStatus'
                         }
                     ]
                 },
@@ -58,7 +68,7 @@ export default function CustomerDataComponent(props) {
                                               onClick={(e) => showCustomerDetails(e, props)}><AiFillEdit/></a>
                         },
                         {
-                            Header: 'Add Visit',
+                            Header: 'Contacts',
                             Cell: props => <a href="#" className="inline-block align-items-center"><AiFillEdit/></a>
                         }
                     ]

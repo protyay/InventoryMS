@@ -5,11 +5,10 @@ export const CustomerDetailsContext = createContext();
 export const CustomerDetailsProvider = (props) => {
     const [customerDetailsContextState, setCustomerDetailsContextState] = useState({
         customerName: '',
-        contactPerson: '',
-        contactNumber: '',
-        address: '',
-        email: '',
-        gstin: ''
+        officeAddress: '',
+        factoryAddress: '',
+        gstin: '',
+        customerStatus:''
     });
     return (
         <CustomerDetailsContext.Provider value={[customerDetailsContextState, setCustomerDetailsContextState]}>
