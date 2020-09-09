@@ -10,11 +10,9 @@ export default function CustomerDetailsForm(props) {
     const initialCustomerState = {
         customerName: '',
         officeAddress: '',
-        factoryAddress: '',
-        address: '',
-        email: '',
+        factoryAddress: '',        
         gstin: '',
-        status: ''
+        customerStatus: ''
     };
 
     const [customerDetailsState, setCustomerDetailsState] = useState(initialCustomerState);
@@ -112,60 +110,14 @@ export default function CustomerDetailsForm(props) {
                                             type="text"
                                             name="custName"
                                             id="custName"
-                                            placeholder="Enter Customer Name"
                                             defaultValue={customerDetailsState.customerName}
                                             onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, customerName: e.target.value })}
                                         />
                                     </FormGroup>
                                 </Col>
-                                <Col md={{ size: 5, offset: 1 }}>
+                                <Col md={{ size: 5,offset :1 }}>
                                     <FormGroup>
-                                        <Label for="officeAddress">Office Address</Label>
-                                        <Input
-                                            type="text"
-                                            name="officeAddress"
-                                            id="officeAddress"
-                                            placeholder="Enter Office Address"
-                                            defaultValue={customerDetailsState.officeAddress}
-                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState , officeAddress: e.target.value })}
-                                        />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col md={{ size: 5 }}>
-                                    <FormGroup>
-                                        <Label for="factoryAddress">Factory Address</Label>
-                                        <Input
-                                            type="text"
-                                            name="factoryAddress"
-                                            id="factoryAddress"
-                                            placeholder="Enter Factory Address"
-                                            defaultValue={customerDetailsState.factoryAddress}
-                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, contactNumber: e.target.value })}
-                                        />
-                                    </FormGroup>
-                                </Col>
-                                <Col md={{ size: 5, offset: 1 }}>
-                                    <FormGroup>
-                                        <Label for="email">Email</Label>
-                                        <Input
-                                            type="email"
-                                            name="email"
-                                            id="email"
-                                            placeholder="Enter Email"
-                                            defaultValue={customerDetailsState.email}
-                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, email: e.target.value })}
-                                        />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col md={{ size: 5 }}>
-                                    <FormGroup>
-                                        <Label for="gstin">GSTIN</Label>
+                                        <Label for="state">State</Label>
                                         <Dropdown toggle={toggleStateDropDown} isOpen={dropdownOpen}>
                                             <DropdownToggle caret>
                                                 Select State
@@ -179,20 +131,71 @@ export default function CustomerDetailsForm(props) {
                                             </DropdownMenu>
                                         </Dropdown>
 
+                                      
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                            <Col md={{ size: 5 }}>
+                                    <FormGroup>
+                                        <Label for="officeAddress">Office Address</Label>
+                                        <Input
+                                            type="text"
+                                            name="officeAddress"
+                                            id="officeAddress"
+                                            defaultValue={customerDetailsState.officeAddress}
+                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState , officeAddress: e.target.value })}
                                         />
                                     </FormGroup>
                                 </Col>
                                 <Col md={{ size: 5, offset: 1 }}>
+                                    <FormGroup>
+                                        <Label for="factoryAddress">Factory Address</Label>
+                                        <Input
+                                            type="text"
+                                            name="factoryAddress"
+                                            id="factoryAddress"
+                                            defaultValue={customerDetailsState.factoryAddress}
+                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, contactNumber: e.target.value })}
+                                        />
+                                    </FormGroup>
+                                </Col>
+                                
+                            </Row>
+
+                            <Row>
+                                <Col md={{ size: 5}}>
                                     <FormGroup>
                                         <Label for="gstin">GSTIN</Label>
                                         <Input
                                             type="text"
                                             name="gstin"
                                             id="gstin"
-                                            placeholder="Enter GSTIN"
                                             defaultValue={customerDetailsState.gstin}
                                             onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, gstin: e.target.value })}
                                         />
+                                    </FormGroup>
+                                </Col>
+                                <Col md={{ size: 5, offset: 1  }}>
+                                    <FormGroup>
+                                        <Label for="status">Status</Label>
+                                        <Dropdown toggle={toggleStateDropDown} isOpen={dropdownOpen}>
+                                            <DropdownToggle caret>
+                                               select
+                                            </DropdownToggle>
+                                           <DropdownMenu>
+                                                <DropdownItem>
+                                                    true
+                                                </DropdownItem>
+                                                <DropdownItem>
+                                                    false
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                            
+                                        </Dropdown>
+
+                                      
                                     </FormGroup>
                                 </Col>
                             </Row>
