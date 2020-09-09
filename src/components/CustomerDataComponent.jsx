@@ -33,7 +33,7 @@ export default function CustomerDataComponent(props) {
                     ]
                 },
                 {
-                    Header: 'Contact Details',
+                    Header: 'Address Details',
                     columns: [
                         {
                             Header: 'Contact Person',
@@ -76,7 +76,7 @@ export default function CustomerDataComponent(props) {
     } = useTable({
         columns,
         data
-    })
+    });
 
     async function fetchAllCustomers() {
         const fetchAllCustomers = await fetch('/api/customers', {
@@ -99,11 +99,9 @@ export default function CustomerDataComponent(props) {
 
     return (
         <div className="flex justify-center shrink-0">
-            <div className="px-2 py-20 w-full">
+            <div className="px-2 py-20 w-full space-y-4 divide-y-4 divide-gray-300">
 
                 <h1 className="text-xl font-bold text-blue-500">Customer Records</h1>
-                <hr/>
-
                 <table className="table-auto border-collapse border-2 bg-white shadow-md" {...getTableProps()}>
                     <thead>
                     {headerGroups.map(headerGroup => (

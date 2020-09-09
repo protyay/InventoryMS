@@ -1,4 +1,4 @@
-const states = require("../controllers/statemst.controller.js")
+const states = require("../controllers/statemaster.controller.js")
 const express = require('express')
 const router = require("express").Router()
 const auth = require('../middleware/auth')

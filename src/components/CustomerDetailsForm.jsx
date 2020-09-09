@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
+import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader,
+          Row,Dropdown, DropdownMenu, DropdownItem , DropdownToggle} from "reactstrap";
 import getFetchOptions from '../util/fetchOptions';
 import { CustomerDetailsContext } from './componentStates/CustomerDetailsContext';
 
@@ -8,8 +9,8 @@ export default function CustomerDetailsForm(props) {
 
     const initialCustomerState = {
         customerName: '',
-        contactPerson: '',
-        contactNumber: '',
+        officeAddress: '',
+        factoryAddress: '',
         address: '',
         email: '',
         gstin: '',
@@ -19,8 +20,16 @@ export default function CustomerDetailsForm(props) {
     const [customerDetailsState, setCustomerDetailsState] = useState(initialCustomerState);
     const [customerEditDetails, setCustomerDetailsContextState] = useContext(CustomerDetailsContext);
     const [isEditAction, toggleEditAction] = props.isEditAction;
+    const [states, setStates] = useState([]);
 
+    // Dropdown state -- START
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const toggleStateDropDown = () => setDropdownOpen(prevState => !prevState);
+    // Dropdown state - END
 
+    /**
+     * We want to re-run this EFFECT after there's a change in the value of {isEditAction} props
+     */
     useEffect(() => {
         if (isEditAction) {
             console.log('Edit action triggered');
@@ -28,8 +37,22 @@ export default function CustomerDetailsForm(props) {
             const customerNecessaryEditDetails = _.pick(customerEditDetails, ['customerName', 'address', 'contactPerson', 'contactNumber', 'email', 'gstin']);
             setCustomerDetailsState({ ...customerNecessaryEditDetails });
         }
-    }, []);
+    }, [props.isEditAction]);
+    /**
+     * Separation of concerns as mentioned in the React Doc
+     * We would ONLY run this effect when the COMPONENT mounts
+     */
+    useEffect(() => {
+        // Load all the states for dropdown
+        const fetchStates = async() => {
+            const fetchOptions = getFetchOptions('GET');
+            const statesMaster = await fetch('/api/states',fetchOptions);
+            const stateMasterResponseJSON = await statesMaster.json();
+            console.log(stateMasterResponseJSON);
 
+            setStates(stateMasterResponseJSON);
+        }
+    },[]);
 
     const [modalOpen, setModalOpen] = useState(true);
 
@@ -97,14 +120,14 @@ export default function CustomerDetailsForm(props) {
                                 </Col>
                                 <Col md={{ size: 5, offset: 1 }}>
                                     <FormGroup>
-                                        <Label for="contactPerson">Contact Person</Label>
+                                        <Label for="officeAddress">Office Address</Label>
                                         <Input
                                             type="text"
-                                            name="contactPerson"
-                                            id="contactPerson"
-                                            placeholder="Enter Contact Person"
-                                            defaultValue={customerDetailsState.contactPerson}
-                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, contactPerson: e.target.value })}
+                                            name="officeAddress"
+                                            id="officeAddress"
+                                            placeholder="Enter Office Address"
+                                            defaultValue={customerDetailsState.officeAddress}
+                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState , officeAddress: e.target.value })}
                                         />
                                     </FormGroup>
                                 </Col>
@@ -113,13 +136,13 @@ export default function CustomerDetailsForm(props) {
                             <Row>
                                 <Col md={{ size: 5 }}>
                                     <FormGroup>
-                                        <Label for="contactNum">Contact Number</Label>
+                                        <Label for="factoryAddress">Factory Address</Label>
                                         <Input
                                             type="text"
-                                            name="contactNum"
-                                            id="contactNum"
-                                            placeholder="Enter Contact Num"
-                                            defaultValue={customerDetailsState.contactNumber}
+                                            name="factoryAddress"
+                                            id="factoryAddress"
+                                            placeholder="Enter Factory Address"
+                                            defaultValue={customerDetailsState.factoryAddress}
                                             onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, contactNumber: e.target.value })}
                                         />
                                     </FormGroup>
@@ -142,14 +165,20 @@ export default function CustomerDetailsForm(props) {
                             <Row>
                                 <Col md={{ size: 5 }}>
                                     <FormGroup>
-                                        <Label for="address">Address</Label>
-                                        <Input
-                                            type="text"
-                                            name="address"
-                                            id="address"
-                                            placeholder="Enter Address"
-                                            defaultValue={customerDetailsState.address}
-                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, address: e.target.value })}
+                                        <Label for="gstin">GSTIN</Label>
+                                        <Dropdown toggle={toggleStateDropDown} isOpen={dropdownOpen}>
+                                            <DropdownToggle caret>
+                                                Select State
+                                            </DropdownToggle>
+                                            <DropdownMenu>
+                                                {states.map(state =>
+                                                    <DropdownItem>
+                                                        {state.name}
+                                                    </DropdownItem>
+                                                )}
+                                            </DropdownMenu>
+                                        </Dropdown>
+
                                         />
                                     </FormGroup>
                                 </Col>

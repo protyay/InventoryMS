@@ -7,8 +7,9 @@ export function AuthenticatedUserContextProvider(props) {
     // UserName initialization hook
     useEffect(() => {
         // Execute this hook on component Mount to fetch userName from
-        // Local storage, if available. If not, then initialize with default state.
-    });
+        // Local storage, if available.
+        setLoggedInUserDetails({userName:localStorage.getItem('loggedInUsername')});
+    },[]);
     return (
         <AuthenticatedUserContext.Provider value={{loggedInUserDetails, setLoggedInUserDetails}}>
             {props.children}
