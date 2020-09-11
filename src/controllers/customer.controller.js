@@ -3,7 +3,7 @@ const Customer = db.customer;
 const Op = db.Sequelize.Op;
 const requestValidator = require('../middleware/commonValidations');
 const {default: validator} = require("validator");
-
+const logger = require("../middleware/Log.config")
 exports.create = async (req, res) => {
     try {
 
@@ -17,7 +17,7 @@ exports.create = async (req, res) => {
         const customer = await Customer.create(req.body);
         res.status(201).send({success: true, data: {message: 'Customer Created Successfully!'}})
     } catch (err) {
-        console.log(err);
+        logger.error('Error in Customer Creation :'+err)
         res.status(500).send({success: false, error: {reason: 'Error Occurred while saving'}});
     }
 }
@@ -27,7 +27,7 @@ exports.findAll = async (req, res) => {
         const customers = await Customer.findAll();
         res.send({success: true, data: customers})
     } catch (err) {
-        console.log(err);
+        logger.error('Error in Customer Find all :'+err)
         res.status(500).send({success: false, error: {reason: 'Error Occurred while fetching'}});
     }
 
@@ -42,7 +42,7 @@ exports.findOne = async (req, res) => {
         }
         res.send({success: true, data: customer})
     } catch (err) {
-        console.log(err);
+        logger.error('Error in Find One Customer :'+err)
         res.status(500).send({success: false, error: {reason: 'Error Occurred while fetching'}});
     }
 }
@@ -70,7 +70,7 @@ exports.update = async (req, res) => {
         }
         res.send({success: true, data: {message: `Customer Updated successfully!`}});
     } catch (err) {
-        console.log(err);
+        logger.error('Error in Update Customer :'+err)
         res.status(500).send({success: false, error: {reason: 'Error occurred while updating. Please try again'}});
     }
 }

@@ -46,7 +46,7 @@ export default function CustomerDetailsForm(props) {
             const fetchOptions = getFetchOptions('GET');
             const statesMaster = await fetch('/api/states',fetchOptions);
             const stateMasterResponseJSON = await statesMaster.json();
-            console.log(stateMasterResponseJSON);
+            console.log("States: "+stateMasterResponseJSON);
 
             setStates(stateMasterResponseJSON);
         }

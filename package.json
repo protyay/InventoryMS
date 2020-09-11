@@ -27,7 +27,8 @@
     "sequelize": "^5.21.13",
     "tailwindcss": "^1.4.6",
     "validator": "^13.1.1",
-    "validator.js": "^2.0.4"
+    "validator.js": "^2.0.4",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "autoprefixer": "^9.8.2",
