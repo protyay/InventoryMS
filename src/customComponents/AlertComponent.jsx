@@ -1,12 +1,16 @@
 import React from 'react';
-import { Alert } from 'reactstrap';
+import {Alert, AlertDescription, AlertIcon, CloseButton} from "@chakra-ui/core";
 
-export default function Alertcomponent(props) {
+export default function AlertComponent(props) {
 
     return (
         <>
-            <Alert color={`${props.alertContentDetails.success ? "primary" : "danger"}`} toggle={props.onDismiss}>
-                {props.alertContentDetails.message}
+            <Alert status={`${props.alertContentDetails.success ? "success" : "error"}`} toggle={props.onDismiss}>
+                <AlertIcon/>
+                <AlertDescription p={2}>
+                    {props.alertContentDetails.message}
+                </AlertDescription>
+                <CloseButton color={"green.400"}/>
             </Alert>
         </>
 

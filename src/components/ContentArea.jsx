@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react';
-import {Alert} from 'reactstrap';
 import CustomerDetailsForm from './CustomerDetailsForm';
 import CustomerDataComponent from './CustomerDataComponent';
 import {AuthenticatedUserContext} from './componentStates/LoggedInUserState';
+import {Alert, AlertDescription, AlertIcon, CloseButton} from "@chakra-ui/core";
 
 export default function ContentArea(props) {
 
@@ -32,8 +32,10 @@ export default function ContentArea(props) {
             <div>
                 <h1 className="text-2xl font-medium text-blue-600">Welcome {loggedInUserDetails.userName}</h1>
                 {alertVisible &&
-                <Alert color={`${alertContentDetails.success ? "primary" : "danger"}`} toggle={dismissAlert}>
-                    {alertContentDetails.message}
+                <Alert status={`${alertContentDetails.success ? "success" : "error"}`}>
+                    <AlertIcon/>
+                    <AlertDescription mr={2}>{alertContentDetails.message}</AlertDescription>
+                    <CloseButton position="absolute" color={"red.400"}/>
                 </Alert>
                 }
             </div>
