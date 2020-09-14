@@ -1,17 +1,7 @@
 import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
-import {
-    Box,
-    Button,
-    Flex,
-    FormControl,
-    FormErrorMessage,
-    FormHelperText,
-    FormLabel,
-    Input,
-    Stack,
-    Text
-} from "@chakra-ui/core";
+import {Box, Button, Flex, FormControl, FormHelperText, FormLabel, Input, Stack} from "@chakra-ui/core";
+import FormErrorText from "./FormErrorText";
 
 const _ = require('lodash');
 
@@ -28,15 +18,15 @@ const SignUp = props => {
 
     const redirectUser = () => {
         history.push("/", state);
-    }
+    };
 
     const saveUser = async () => {
         setState({...state, registerClicked: true});
         if (_.isEmpty(state.firstName) || _.isEmpty(state.email) || _.isEmpty(state.password)) {
-            // console.log('Error Alert');
+             //console.log('Error Alert');
             return;
         }
-        if (state.password.length < 12 && state.password.length > 15) {
+        if (state.password.length < 12 || state.password.length > 15) {
             setState({...state, passwordMinCharViolation: true});
             return;
         }
@@ -54,7 +44,11 @@ const SignUp = props => {
         if (response.success) {
             redirectUser();
         }
-    }
+    };
+
+    /**
+     * Sample effect to be executed when there's a state change of any OF the properties
+     */
     return (
         <Flex spacing={6} justifyContent={"center"} alignItems={"center"}>
             <form action="#" className="shadow-md rounded p-20 mb-4 border-4">
@@ -72,7 +66,7 @@ const SignUp = props => {
                             value={state.firstName}
                         />
                         {state.registerClicked && _.isEmpty(state.firstName) &&
-                        <FormErrorMessage>Enter a First Name to proceed</FormErrorMessage>}
+                        <FormErrorText fieldName="First Name"/>}
                     </FormControl>
 
                     <FormControl>
@@ -97,13 +91,14 @@ const SignUp = props => {
                             onChange={(event) => setState({...state, email: event.target.value})}
                         />
                         {state.registerClicked && _.isEmpty(state.email) &&
-                        <FormErrorMessage>Enter a Valid Email to proceed</FormErrorMessage>}
+                        <FormErrorText errorMessage="Enter a Valid Email to proceed"/>}
                     </FormControl>
 
                     <FormControl isRequired>
                         <FormLabel htmlFor="password">Password</FormLabel>
                         <Input
-                            isInvalid={(state.registerClicked && _.isEmpty(state.password)) || (!_.isEmpty(state.password) && state.password.length < 12)}
+                            isInvalid={(state.registerClicked && _.isEmpty(state.password)) || (!_.isEmpty(state.password) && (state.password.length < 12 ||
+                                state.password.length > 15))}
                             type="password"
                             name="password"
                             id="password"
@@ -111,13 +106,15 @@ const SignUp = props => {
                             onChange={(event) => setState({...state, password: event.target.value})}
                         />
                         {state.registerClicked && _.isEmpty(state.password) &&
-                        <Text color={"red.500"} lineHeight={"short"} px={4}>Enter a Valid Password to proceed</Text>}
+                        <FormErrorText fieldName="Password"/>}
+
                         {state.passwordMinCharViolation &&
-                        <Text color={"red.500"} lineHeight={"short"} px={4}>Password must be 8 characters</Text>}
-                        <FormHelperText> Minimum 12 and Maximum 15 Characters</FormHelperText>
+                        <FormErrorText errorMessage="Character Limit in password violated. Please refer text below"/>}
+
+                        <FormHelperText> Min 12 - Max 15 Characters</FormHelperText>
                     </FormControl>
                 </Stack>
-                <Box display="flex" justifyContent="center" mt={4} >
+                <Box display="flex" justifyContent="center" mt={4}>
                     <Button w="full" variant="solid" variantColor="teal" onClick={saveUser}>Register</Button>
                 </Box>
             </form>

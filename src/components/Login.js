@@ -15,6 +15,7 @@ import {
     Input,
     SimpleGrid
 } from "@chakra-ui/core";
+import FormErrorText from "./FormErrorText";
 
 
 const _ = require('lodash');
@@ -56,7 +57,7 @@ const Login = props => {
 
             console.log('Response from Login API', loginResponse);
             if (!loginResponse.success) {
-                setErrorDetails({errorMessage: loginResponse.error.reason, hasError: true, alertOpen: true});
+                setErrorDetails({errorMessage: loginResponse.data.reason, hasError: true, alertOpen: true});
                 window.setTimeout(() => {
                     setErrorDetails({...errorDetails, alertOpen: false});
                 }, 3000)
@@ -86,7 +87,7 @@ const Login = props => {
                 <form action="#" className="shadow-md rounded p-16 mb-4 border-4">
                     <Box marginBottom={4}>
                         <FormControl isRequired>
-                            <FormLabel for="userEmail">Email</FormLabel>
+                            <FormLabel htmlFor="userEmail">Email</FormLabel>
                             <Input
                                 isInvalid={loginDetails.handlerClicked && _.isEmpty(loginDetails.email)}
                                 type="email"
@@ -101,10 +102,10 @@ const Login = props => {
                                 _invalid={{bgColor: "grey.400", borderColor: "red.300"}}
                             />
                             {loginDetails.handlerClicked && _.isEmpty(loginDetails.email) &&
-                            <FormErrorMessage>Enter valid Email to proceed</FormErrorMessage>}
+                            <FormErrorText fieldName="Email"/>}
                         </FormControl>
                         <FormControl my={6} isRequired>
-                            <FormLabel for="password">Password</FormLabel>
+                            <FormLabel htmlFor="password">Password</FormLabel>
                             <Input
                                 isInvalid={loginDetails.handlerClicked && _.isEmpty(loginDetails.password)}
                                 type="password"
@@ -119,7 +120,7 @@ const Login = props => {
                                 _invalid={{bgColor: "grey.400", borderColor: "red.300"}}
                             />
                             {loginDetails.handlerClicked && _.isEmpty(loginDetails.password) &&
-                            <FormErrorMessage>Enter valid password to proceed</FormErrorMessage>}
+                            <FormErrorText fieldName="Password"/>}
                         </FormControl>
                     </Box>
                     <Flex justifyContent="center" direction={"column"}>
