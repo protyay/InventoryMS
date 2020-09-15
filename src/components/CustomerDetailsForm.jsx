@@ -16,11 +16,12 @@ import {
     ModalHeader,
     ModalOverlay,
     Select,
-    Spinner,
     Stack
 } from "@chakra-ui/core";
 import FormErrorText from "./FormErrorText";
 
+//TODO: Introduce Spinner
+//TODO: Add custom validations
 export default function CustomerDetailsForm(props) {
 
     const initialCustomerState = {
@@ -28,8 +29,8 @@ export default function CustomerDetailsForm(props) {
         officeAddress: '',
         factoryAddress: '',
         gstin: '',
-        customerStatus: '',
-        customerState: ''
+        customerStatus: true,
+        state: ''
     };
 
     const [customerDetailsState, setCustomerDetailsState] = useState(initialCustomerState);
@@ -38,6 +39,7 @@ export default function CustomerDetailsForm(props) {
     const [states, setStates] = useState([]);
     const [showSpinner, setShowSpinner] = useState(false);
     const [modalOpen, setModalOpen] = useState(true);
+    const [dataInvalid, setDataInvalid] = useState(false);
     /**
      * We want to re-run this EFFECT after there's a change in the value of {isEditAction} props
      */
@@ -66,7 +68,12 @@ export default function CustomerDetailsForm(props) {
     }, []);
 
     const saveOrUpdateCustomer = async () => {
-        setShowSpinner(true);
+        // Validate the input, if invalid stop further execution
+        if (_.isEmpty(customerDetailsState.customerName) || _.isEmpty(customerDetailsState.state)) {
+            setDataInvalid(true);
+            return;
+        }
+        // Check the state selection to find the corresponding state
         const token = localStorage.getItem('jwt');
         if (_.isEmpty(token)) {
             throw new Error('Jwt NOT available. Please check w/ Administrator.');
@@ -89,7 +96,7 @@ export default function CustomerDetailsForm(props) {
             setCustomerDetailsContextState(initialCustomerState);
         } else {
             // Else Add the customer
-            console.log('Customer details state', customerDetailsState);
+            console.log('Customer Data', customerDetailsState);
             const postFetchOptions = getFetchOptions('POST', customerDetailsState, token);
             const initiateCustomerSave = await fetch('/api/customers', postFetchOptions);
             const customerSaveResponse = await initiateCustomerSave.json();
@@ -102,7 +109,6 @@ export default function CustomerDetailsForm(props) {
                 props.showSaveAlert(false, customerSaveResponse.error.reason);
             }
         }
-        setShowSpinner(false);
         props.setShowCustomerDetailsModal(false);
         setModalOpen(false);
     };
@@ -118,13 +124,12 @@ export default function CustomerDetailsForm(props) {
 
                     <ModalBody>
                         <Box p={2}>
-                            {showSpinner && <Spinner color={"red.400"}/>}
                             <form>
                                 <Stack spacing={3}>
                                     <FormControl isRequired>
                                         <FormLabel htmlFor="custName">Customer Name</FormLabel>
                                         <Input
-                                            isInvalid={false}
+                                            isInvalid={dataInvalid && _.isEmpty(customerDetailsState.customerName)}
                                             type="text"
                                             name="custName"
                                             id="custName"
@@ -134,8 +139,8 @@ export default function CustomerDetailsForm(props) {
                                                 customerName: e.target.value
                                             })}
                                         />
-                                        {
-                                            <FormErrorText fieldName={"Customer Name"}/>}
+                                        {dataInvalid && _.isEmpty(customerDetailsState.customerName) &&
+                                        <FormErrorText fieldName="Customer Name"/>}
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel htmlFor="officeAddress">Office Address</FormLabel>
@@ -159,7 +164,7 @@ export default function CustomerDetailsForm(props) {
                                             defaultValue={customerDetailsState.factoryAddress}
                                             onChange={(e) => setCustomerDetailsState({
                                                 ...customerDetailsState,
-                                                contactNumber: e.target.value
+                                                factoryAddress: e.target.value
                                             })}
                                         />
                                     </FormControl>
@@ -179,14 +184,19 @@ export default function CustomerDetailsForm(props) {
                                     <FormControl>
                                         <FormLabel htmlFor="state">State</FormLabel>
                                         <Select placeholder={"Select Customer State"} size={"md"}
-                                                onChange={(e) => setCustomerDetailsState({
-                                                    ...customerDetailsState,
-                                                    customerState: e.target.value
-                                                })}>
+                                                onChange={(e) => {
+                                                    setCustomerDetailsState({
+                                                        ...customerDetailsState,
+                                                        state: e.target.value
+                                                    })
+                                                }}>
                                             {states.map(state =>
-                                                <option key={state.id}>{state.stateName}</option>
+                                                <option key={state.id}
+                                                        value={state.stateCode}>{state.stateName}</option>
                                             )}
                                         </Select>
+                                        {dataInvalid && _.isEmpty(customerDetailsState.state) &&
+                                        <FormErrorText fieldName="State"/>}
                                     </FormControl>
                                     <FormControl>
                                         <FormLabel>Customer Status</FormLabel>
@@ -195,7 +205,7 @@ export default function CustomerDetailsForm(props) {
                                                     ...customerDetailsState,
                                                     customerStatus: e.target.value
                                                 })}>
-                                            {<option value="true" selected>ACTIVE</option>}
+                                            {<option value="true" defaultChecked>ACTIVE</option>}
                                             {<option value="false">INACTIVE</option>}
                                         </Select>
                                     </FormControl>

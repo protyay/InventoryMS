@@ -8,9 +8,12 @@ exports.create = async (req, res) => {
     try {
 
         if (requestValidator.checkEmptyString(req.body.customerName)) {
-            return res.status(400).send({success: false, error: {reason: 'Customer Name is required'}})
-        } else if (requestValidator.checkEmptyString(req.body.state)) {
-            return res.status(400).send({success: false, error: {reason: 'State is required'}})
+            res.status(400).send({success: false, error: {reason: 'Customer Name is required'}});
+            return;
+        }
+        if (requestValidator.checkEmptyString(req.body.state)) {
+            res.status(400).send({success: false, error: {reason: 'State is required'}});
+            return;
         }
         const noOfCustomers = await Customer.count();
         req.body.customerCode = 'CDC' + req.body.state + parseInt(noOfCustomers + 1);
