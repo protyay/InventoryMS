@@ -1,30 +1,45 @@
 import * as _ from 'lodash';
-import React, { useContext, useEffect, useState } from 'react';
-import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader,
-          Row,Dropdown, DropdownMenu, DropdownItem , DropdownToggle} from "reactstrap";
+import React, {useContext, useEffect, useState} from 'react';
 import getFetchOptions from '../util/fetchOptions';
-import { CustomerDetailsContext } from './componentStates/CustomerDetailsContext';
+import {CustomerDetailsContext} from './componentStates/CustomerDetailsContext';
+import {
+    Box,
+    Button,
+    Flex,
+    FormControl,
+    FormLabel,
+    Input,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Select,
+    Stack
+} from "@chakra-ui/core";
+import FormErrorText from "./FormErrorText";
 
+//TODO: Introduce Spinner
+//TODO: Add custom validations
 export default function CustomerDetailsForm(props) {
 
     const initialCustomerState = {
         customerName: '',
         officeAddress: '',
-        factoryAddress: '',        
+        factoryAddress: '',
         gstin: '',
-        customerStatus: ''
+        customerStatus: true,
+        state: ''
     };
 
     const [customerDetailsState, setCustomerDetailsState] = useState(initialCustomerState);
     const [customerEditDetails, setCustomerDetailsContextState] = useContext(CustomerDetailsContext);
     const [isEditAction, toggleEditAction] = props.isEditAction;
     const [states, setStates] = useState([]);
-
-    // Dropdown state -- START
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const toggleStateDropDown = () => setDropdownOpen(prevState => !prevState);
-    // Dropdown state - END
-
+    const [showSpinner, setShowSpinner] = useState(false);
+    const [modalOpen, setModalOpen] = useState(true);
+    const [dataInvalid, setDataInvalid] = useState(false);
     /**
      * We want to re-run this EFFECT after there's a change in the value of {isEditAction} props
      */
@@ -33,7 +48,7 @@ export default function CustomerDetailsForm(props) {
             console.log('Edit action triggered');
             // Pick ONLY the required customer state to be used in the form
             const customerNecessaryEditDetails = _.pick(customerEditDetails, ['customerName', 'address', 'contactPerson', 'contactNumber', 'email', 'gstin']);
-            setCustomerDetailsState({ ...customerNecessaryEditDetails });
+            setCustomerDetailsState({...customerNecessaryEditDetails});
         }
     }, [props.isEditAction]);
     /**
@@ -42,19 +57,23 @@ export default function CustomerDetailsForm(props) {
      */
     useEffect(() => {
         // Load all the states for dropdown
-        const fetchStates = async() => {
+        const fetchStates = async () => {
             const fetchOptions = getFetchOptions('GET');
-            const statesMaster = await fetch('/api/states',fetchOptions);
+            const statesMaster = await fetch('/api/states', fetchOptions);
             const stateMasterResponseJSON = await statesMaster.json();
-            console.log("States: "+stateMasterResponseJSON);
-
-            setStates(stateMasterResponseJSON);
-        }
-    },[]);
-
-    const [modalOpen, setModalOpen] = useState(true);
+            console.log(stateMasterResponseJSON);
+            return stateMasterResponseJSON;
+        };
+        fetchStates().then(statesResponse => setStates(statesResponse.data));
+    }, []);
 
     const saveOrUpdateCustomer = async () => {
+        // Validate the input, if invalid stop further execution
+        if (_.isEmpty(customerDetailsState.customerName) || _.isEmpty(customerDetailsState.state)) {
+            setDataInvalid(true);
+            return;
+        }
+        // Check the state selection to find the corresponding state
         const token = localStorage.getItem('jwt');
         if (_.isEmpty(token)) {
             throw new Error('Jwt NOT available. Please check w/ Administrator.');
@@ -75,9 +94,9 @@ export default function CustomerDetailsForm(props) {
                 props.showSaveAlert(false, customerUpdateResponse.error.reason);
             }
             setCustomerDetailsContextState(initialCustomerState);
-        }
-        else {
+        } else {
             // Else Add the customer
+            console.log('Customer Data', customerDetailsState);
             const postFetchOptions = getFetchOptions('POST', customerDetailsState, token);
             const initiateCustomerSave = await fetch('/api/customers', postFetchOptions);
             const customerSaveResponse = await initiateCustomerSave.json();
@@ -86,8 +105,7 @@ export default function CustomerDetailsForm(props) {
                 console.log("Customer saved successfully with ID", customerSaveResponse);
                 props.showSaveAlert(true, 'Customer saved successfully');
                 props.reloadCustomerTable(true);
-            }
-            else {
+            } else {
                 props.showSaveAlert(false, customerSaveResponse.error.reason);
             }
         }
@@ -96,123 +114,123 @@ export default function CustomerDetailsForm(props) {
     };
 
     return (
-        <Row>
-            <Col md={{ size: 12 }}>
-                <Modal isOpen={modalOpen}>
-                    <ModalHeader >Add Customer</ModalHeader>
+
+        <Flex align="center" justifyContent="center">
+            <Modal isOpen={modalOpen}>
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader fontSize={"2xl"} fontWeight={"bold"} lineHeight={"tall"} color={"blue.400"}
+                                 textAlign={"center"}>Add Customer</ModalHeader>
+
                     <ModalBody>
-                        <Form action="#" className="mt-2">
-                            <Row>
-                                <Col md={{ size: 5 }}>
-                                    <FormGroup>
-                                        <Label for="custName">Customer Name</Label>
+                        <Box p={2}>
+                            <form>
+                                <Stack spacing={3}>
+                                    <FormControl isRequired>
+                                        <FormLabel htmlFor="custName">Customer Name</FormLabel>
                                         <Input
+                                            isInvalid={dataInvalid && _.isEmpty(customerDetailsState.customerName)}
                                             type="text"
                                             name="custName"
                                             id="custName"
                                             defaultValue={customerDetailsState.customerName}
-                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, customerName: e.target.value })}
+                                            onChange={(e) => setCustomerDetailsState({
+                                                ...customerDetailsState,
+                                                customerName: e.target.value
+                                            })}
                                         />
-                                    </FormGroup>
-                                </Col>
-                                <Col md={{ size: 5,offset :1 }}>
-                                    <FormGroup>
-                                        <Label for="state">State</Label>
-                                        <Dropdown toggle={toggleStateDropDown} isOpen={dropdownOpen}>
-                                            <DropdownToggle caret>
-                                                Select State
-                                            </DropdownToggle>
-                                            <DropdownMenu>
-                                                {states.map(state =>
-                                                    <DropdownItem>
-                                                        {state.name}
-                                                    </DropdownItem>
-                                                )}
-                                            </DropdownMenu>
-                                        </Dropdown>
-
-                                      
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-
-                            <Row>
-                            <Col md={{ size: 5 }}>
-                                    <FormGroup>
-                                        <Label for="officeAddress">Office Address</Label>
+                                        {dataInvalid && _.isEmpty(customerDetailsState.customerName) &&
+                                        <FormErrorText fieldName="Customer Name"/>}
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel htmlFor="officeAddress">Office Address</FormLabel>
                                         <Input
                                             type="text"
                                             name="officeAddress"
                                             id="officeAddress"
                                             defaultValue={customerDetailsState.officeAddress}
-                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState , officeAddress: e.target.value })}
+                                            onChange={(e) => setCustomerDetailsState({
+                                                ...customerDetailsState,
+                                                officeAddress: e.target.value
+                                            })}
                                         />
-                                    </FormGroup>
-                                </Col>
-                                <Col md={{ size: 5, offset: 1 }}>
-                                    <FormGroup>
-                                        <Label for="factoryAddress">Factory Address</Label>
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel htmlFor="factoryAddress">Factory Address</FormLabel>
                                         <Input
                                             type="text"
                                             name="factoryAddress"
                                             id="factoryAddress"
                                             defaultValue={customerDetailsState.factoryAddress}
-                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, contactNumber: e.target.value })}
+                                            onChange={(e) => setCustomerDetailsState({
+                                                ...customerDetailsState,
+                                                factoryAddress: e.target.value
+                                            })}
                                         />
-                                    </FormGroup>
-                                </Col>
-                                
-                            </Row>
-
-                            <Row>
-                                <Col md={{ size: 5}}>
-                                    <FormGroup>
-                                        <Label for="gstin">GSTIN</Label>
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel htmlFor="gstin">GSTIN</FormLabel>
                                         <Input
                                             type="text"
                                             name="gstin"
                                             id="gstin"
                                             defaultValue={customerDetailsState.gstin}
-                                            onChange={(e) => setCustomerDetailsState({ ...customerDetailsState, gstin: e.target.value })}
+                                            onChange={(e) => setCustomerDetailsState({
+                                                ...customerDetailsState,
+                                                gstin: e.target.value
+                                            })}
                                         />
-                                    </FormGroup>
-                                </Col>
-                                <Col md={{ size: 5, offset: 1  }}>
-                                    <FormGroup>
-                                        <Label for="status">Status</Label>
-                                        <Dropdown toggle={toggleStateDropDown} isOpen={dropdownOpen}>
-                                            <DropdownToggle caret>
-                                               select
-                                            </DropdownToggle>
-                                           <DropdownMenu>
-                                                <DropdownItem>
-                                                    true
-                                                </DropdownItem>
-                                                <DropdownItem>
-                                                    false
-                                                </DropdownItem>
-                                            </DropdownMenu>
-                                            
-                                        </Dropdown>
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel htmlFor="state">State</FormLabel>
+                                        <Select placeholder={"Select Customer State"} size={"md"}
+                                                onChange={(e) => {
+                                                    setCustomerDetailsState({
+                                                        ...customerDetailsState,
+                                                        state: e.target.value
+                                                    })
+                                                }}>
+                                            {states.map(state =>
+                                                <option key={state.id}
+                                                        value={state.stateCode}>{state.stateName}</option>
+                                            )}
+                                        </Select>
+                                        {dataInvalid && _.isEmpty(customerDetailsState.state) &&
+                                        <FormErrorText fieldName="State"/>}
+                                    </FormControl>
+                                    <FormControl>
+                                        <FormLabel>Customer Status</FormLabel>
+                                        <Select size={"md"}
+                                                onChange={(e) => setCustomerDetailsState({
+                                                    ...customerDetailsState,
+                                                    customerStatus: e.target.value
+                                                })}>
+                                            {<option value="true" defaultChecked>ACTIVE</option>}
+                                            {<option value="false">INACTIVE</option>}
+                                        </Select>
+                                    </FormControl>
+                                </Stack>
 
-                                      
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-
-                        </Form>
+                            </form>
+                        </Box>
                     </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={saveOrUpdateCustomer}>{`${isEditAction ? 'Update' : 'Save'}`}</Button>
-                        <Button color="secondary" onClick={() => {
-                            setModalOpen(false);
-                            props.setShowCustomerDetailsModal(false);
-                            isEditAction && toggleEditAction(false);
-                        }}>Cancel</Button>
-                    </ModalFooter>
-                </Modal>
-            </Col >
 
-        </Row >
+                    <ModalFooter>
+                        <Box mx={4}>
+                            <Button variantColor="teal" variant={"solid"} size={"md"}
+                                    onClick={saveOrUpdateCustomer}>{`${isEditAction ? 'Update' : 'Save'}`}</Button>
+                        </Box>
+                        <Box>
+                            <Button variantColor="blue" variant={"outline"} size={"md"} onClick={() => {
+                                setModalOpen(false);
+                                props.setShowCustomerDetailsModal(false);
+                                isEditAction && toggleEditAction(false);
+                            }}>Cancel</Button>
+                        </Box>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </Flex>
+
     )
 }

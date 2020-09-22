@@ -1,8 +1,22 @@
 import {Link, useHistory} from "react-router-dom";
 import React, {useContext, useEffect, useState} from "react";
-import {Alert, Button, Col, Form, FormFeedback, FormGroup, Input, Label, Row} from "reactstrap";
-import Alertcomponent from "../customComponents/AlertComponent";
+import AlertComponent from "../customComponents/AlertComponent";
 import {AuthenticatedUserContext} from "./componentStates/LoggedInUserState";
+import {
+    Alert,
+    AlertDescription,
+    AlertIcon,
+    Box,
+    Button,
+    Flex,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
+    Input,
+    SimpleGrid
+} from "@chakra-ui/core";
+import FormErrorText from "./FormErrorText";
+
 
 const _ = require('lodash');
 
@@ -43,7 +57,7 @@ const Login = props => {
 
             console.log('Response from Login API', loginResponse);
             if (!loginResponse.success) {
-                setErrorDetails({errorMessage: loginResponse.error.reason, hasError: true, alertOpen: true});
+                setErrorDetails({errorMessage: loginResponse.data.reason, hasError: true, alertOpen: true});
                 window.setTimeout(() => {
                     setErrorDetails({...errorDetails, alertOpen: false});
                 }, 3000)
@@ -57,10 +71,10 @@ const Login = props => {
     }
 
     return (
-        <Row>
-            <Col md={{size: 6, offset: 4}}>
+        <Flex justifyContent="center" my={16}>
+            <SimpleGrid columns={{md: 6, sm: 3}}>
                 {registrationAlertMessage && props.location.state && <div className="w-1/2 pt-5">
-                    <Alertcomponent
+                    <AlertComponent
                         alertContentDetails={{
                             success: true,
                             message: `Hello ${props.location.state.firstName}!. Your registration is successful`
@@ -68,12 +82,14 @@ const Login = props => {
                         onDismiss={() => setRegistrationAlertMessage(false)}/>
 
                 </div>}
-                <div className="w-full max-w-xs pt-20">
-                    <Form action="#" className="bg-blue-100 shadow-md rounded px-8 pt-6 pb-8 mb-4 border-4">
-                        <FormGroup className="mb-4">
-                            <Label for="userEmail">Email</Label>
+            </SimpleGrid>
+            <Flex >
+                <form action="#" className="shadow-md rounded p-16 mb-4 border-4">
+                    <Box marginBottom={4}>
+                        <FormControl isRequired>
+                            <FormLabel htmlFor="userEmail">Email</FormLabel>
                             <Input
-                                invalid={loginDetails.handlerClicked && _.isEmpty(loginDetails.email)}
+                                isInvalid={loginDetails.handlerClicked && _.isEmpty(loginDetails.email)}
                                 type="email"
                                 name="email"
                                 id="userEmail"
@@ -83,14 +99,15 @@ const Login = props => {
                                     email: event.target.value,
                                     handlerClicked: false
                                 })}
+                                _invalid={{bgColor: "grey.400", borderColor: "red.300"}}
                             />
                             {loginDetails.handlerClicked && _.isEmpty(loginDetails.email) &&
-                            <FormFeedback>Enter valid Email to proceed</FormFeedback>}
-                        </FormGroup>
-                        <FormGroup className="mb-6">
-                            <Label for="password">Password</Label>
+                            <FormErrorText fieldName="Email"/>}
+                        </FormControl>
+                        <FormControl my={6} isRequired>
+                            <FormLabel htmlFor="password">Password</FormLabel>
                             <Input
-                                invalid={loginDetails.handlerClicked && _.isEmpty(loginDetails.password)}
+                                isInvalid={loginDetails.handlerClicked && _.isEmpty(loginDetails.password)}
                                 type="password"
                                 name="password"
                                 id="password"
@@ -100,28 +117,35 @@ const Login = props => {
                                     password: event.target.value,
                                     handlerClicked: false
                                 })}
+                                _invalid={{bgColor: "grey.400", borderColor: "red.300"}}
                             />
                             {loginDetails.handlerClicked && _.isEmpty(loginDetails.password) &&
-                            <FormFeedback>Enter valid password to proceed</FormFeedback>}
-                        </FormGroup>
+                            <FormErrorText fieldName="Password"/>}
+                        </FormControl>
+                    </Box>
+                    <Flex justifyContent="center" direction={"column"}>
+                        <Button variant="solid" variantColor="blue" size="lg" onClick={handleLogin}>Login</Button>
+                        <Flex justifyContent="center" alignItems="center">
+                            <Link to="/signUp">
+                                <Button variant="solid" mt={5} size={"lg"} variantColor="green">SignUp</Button>
+                            </Link>
+                        </Flex>
 
-                        <div className="d-flex justify-content-center">
-                            <Button color="primary" onClick={handleLogin}>Login</Button>
-                        </div>
-                        {errorDetails.hasError && <div className="my-3 mx-2">
-                            <Alert color="danger" isOpen={errorDetails.alertOpen}>
+                    </Flex>
+                    {errorDetails.hasError && <Box className="my-3 mx-2">
+                        <Alert status="error" isOpen={errorDetails.alertOpen}>
+                            <AlertIcon/>
+                            <AlertDescription>
                                 {errorDetails.errorMessage}
-                            </Alert>
-                        </div>}
-                        <Link to="/signUp">
-                            <Button color="link" className="btn-block mt-5">SignUp</Button>
-                        </Link>
-                    </Form>
+                            </AlertDescription>
+                        </Alert>
+                    </Box>}
 
-                </div>
+                </form>
 
-            </Col>
-        </Row>
+            </Flex>
+
+        </Flex>
 
 
     );

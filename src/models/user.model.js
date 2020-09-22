@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const jwt   =   require('jsonwebtoken')
+const jwt   =   require('jsonwebtoken');
 module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define("user", {
       id: {
@@ -27,7 +27,7 @@ module.exports = (sequelize, Sequelize) => {
       hooks : {
           beforeCreate : (User  ) => {
               {
-                User.password = User.password && User.password != "" ? bcrypt.hashSync(User.password, 8) : "";
+                User.password === User.password && User.password !== "" ? bcrypt.hashSync(User.password, 8) : "";
               }
           }
       }
@@ -35,8 +35,8 @@ module.exports = (sequelize, Sequelize) => {
   
    User.prototype.toJSON = function(){
 
-    const userObject = Object.assign({},this.get())
-    delete userObject.password
+    const userObject = Object.assign({},this.get());
+    delete userObject.password;
 
     return userObject
           
@@ -47,9 +47,9 @@ module.exports = (sequelize, Sequelize) => {
   }
 
   User.prototype.generateAuthToken = function(){
-    const user = this
-    const token = jwt.sign({id:user.id.toString()},process.env.JWT_SECRET,{expiresIn: 3600})
-    return token
+    const user = this;
+    const token = jwt.sign({id:user.id.toString()},process.env.JWT_SECRET,{expiresIn: 3600});
+    return token;
   }
 
     return User;
