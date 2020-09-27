@@ -245,7 +245,6 @@ export default function CustomerDetailsForm(props) {
                         </ModalFooter>
                     </ModalContent>}
             </Modal>
-        </Flex>
+        </Flex>)
 
-    );
 }

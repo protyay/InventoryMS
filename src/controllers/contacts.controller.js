@@ -4,7 +4,7 @@ const Contacts = db.contacts
 const Op = db.Sequelize.Op;
 const commonvalidation = require('../middleware/commonValidations');
 const { default: validator } = require("validator");
-
+const logger = require("../middleware/Log.config")
 
 exports.create = async(req,res) =>{
     try{
@@ -33,6 +33,7 @@ exports.create = async(req,res) =>{
         const contact = await Contacts.create(req.body)
         res.status(201).send({ success: true, data: { message:'Contact Detail Created Successfully!'}})
     }catch(err){
+        logger.error('Error in Save Contacts :'+err)
         res.status(500).send({ success: false, error: { reason: 'Error Occurred while saving' }});
     }
 }
@@ -51,6 +52,7 @@ exports.findAll = async (req, res) => {
       });
      res.send({ success: true, data: contacts })
     } catch (err) {
+        logger.error('Error in Find Contacts :'+err)
         res.status(500).send({ success: false, error: {reason:'Error Occurred while fetching'}})
     }
   
