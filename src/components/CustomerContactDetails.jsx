@@ -12,7 +12,8 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Stack
+    Stack,
+    Text
 } from "@chakra-ui/core";
 import * as _ from "lodash";
 import FormErrorText from "./FormErrorText";
@@ -29,7 +30,7 @@ const CustomerContactDetails = props => {
     const [showAlertHeader, setShowAlertHeader] = useState(false);
     const [contactData, setContactData] = useState([]);
 
-    const autoHideModalAlertHeader = () => setTimeout(() => setShowAlertHeader(false), 3000);
+    const autoHideModalAlertHeader = () => setTimeout(() => setShowAlertHeader(false), 5000);
     /**
      * Submit the contact entries made by the user
      * @returns {Promise<void>}
@@ -106,10 +107,10 @@ const CustomerContactDetails = props => {
                                  borderBottom={"1px black"}
                                  textAlign={"center"}>Contact Details</ModalHeader>
                     {showAlertHeader &&
-                    <ModalHeader marginTop={4} fontSize={"xl"} fontWeight={"bold"} lineHeight={"tall"}
-                                 color={"green.300"}>
+                    <Text marginTop={4} fontSize={"xl"} fontWeight={"bold"} lineHeight={"tall"} textAlign={"center"}
+                          color={"green.300"}>
                         {contactAlertMessage}
-                    </ModalHeader>}
+                    </Text>}
                     <Box className="divide-y-4 space-y-2 divide-gray-300 mx-4 p-4">
                         <ModalBody>
                             <Box paddingBottom={4}>
@@ -168,7 +169,7 @@ const CustomerContactDetails = props => {
                             </Flex>
                         </ModalBody>
                         <ModalBody>
-                            <Flex justifyContent="center" >
+                            <Flex justifyContent="center">
                                 <table
                                     className="table-auto border-collapse border-2 bg-white shadow-md my-4" {...getTableProps()}>
                                     <thead>
