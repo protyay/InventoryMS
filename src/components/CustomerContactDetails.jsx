@@ -22,7 +22,7 @@ import {useTable} from "react-table";
 
 const CustomerContactDetails = props => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [contactDetails, setContactDetails] = useState({contactName: '', contactNumber: '', email: ''});
+    const [contactDetails, setContactDetails] = useState({contactPerson: '', contactNumber: '', email: ''});
     const [formDataInvalid, setFormDataInvalid] = useState(false);
     const [customerDetails, setCustomerDetailsContextState] = useContext(CustomerDetailsContext);
     const [contactAlertMessage, setContactAlertMessage] = useState('');
@@ -36,7 +36,7 @@ const CustomerContactDetails = props => {
      */
     const submitContactDetails = async () => {
         // Validate Input data for the required fields
-        const formData = _.values(_.pick(contactDetails, ['contactName', 'contactNumber']));
+        const formData = _.values(_.pick(contactDetails, ['contactPerson', 'contactNumber']));
         const emptyFormDataIndex = _.findIndex(formData, data => _.isEmpty(data));
         if (emptyFormDataIndex > -1) {
             setFormDataInvalid(true);
@@ -50,6 +50,7 @@ const CustomerContactDetails = props => {
         setShowAlertHeader(true);
         if (contactCreatedResponse.success) {
             setContactAlertMessage(contactCreatedResponse.data.message);
+            fetchAllContactsByCustomerCode(customerDetails.customerCode);
         } else {
             setContactAlertMessage(contactCreatedResponse.error.reason);
         }
@@ -82,10 +83,18 @@ const CustomerContactDetails = props => {
         data
     });
 
+    const fetchAllContactsByCustomerCode = async (customerCode) => {
+        const fetchOptions = getFetchOptions('GET');
+        const fetchContactData = await fetch(`/api/contacts/${customerCode}`, fetchOptions);
+        const fetchedContacts = await fetchContactData.json();
+        console.log(fetchedContacts);
+        setContactData(fetchedContacts.data);
+    };
+
     useEffect(() => {
         // Retrieve the customer Code and fetch all the existing contacts
-        console.log('CustomerContact Mounted');
         setIsModalOpen(true);
+        fetchAllContactsByCustomerCode(customerDetails.customerCode);
     }, []);
 
     return (
@@ -101,7 +110,7 @@ const CustomerContactDetails = props => {
                                  color={"green.300"}>
                         {contactAlertMessage}
                     </ModalHeader>}
-                    <Box className="divide-y-4 divide-gray-300 mx-4 p-4">
+                    <Box className="divide-y-4 space-y-2 divide-gray-300 mx-4 p-4">
                         <ModalBody>
                             <Box paddingBottom={4}>
                                 <form>
@@ -109,17 +118,17 @@ const CustomerContactDetails = props => {
                                         <FormControl isRequired>
                                             <FormLabel htmlFor="contactPerson">Contact Person</FormLabel>
                                             <Input
-                                                isInvalid={formDataInvalid && _.isEmpty(contactDetails.contactName)}
+                                                isInvalid={formDataInvalid && _.isEmpty(contactDetails.contactPerson)}
                                                 type="text"
                                                 name="contactPerson"
                                                 id="contactPerson"
                                                 defaultValue={contactDetails.customerName}
                                                 onChange={(e) => setContactDetails({
                                                     ...contactDetails,
-                                                    contactName: e.target.value
+                                                    contactPerson: e.target.value
                                                 })}
                                             />
-                                            {formDataInvalid && _.isEmpty(contactDetails.contactName) &&
+                                            {formDataInvalid && _.isEmpty(contactDetails.contactPerson) &&
                                             <FormErrorText fieldName="Contact Person"/>}
                                         </FormControl>
                                         <FormControl isRequired>
@@ -159,31 +168,33 @@ const CustomerContactDetails = props => {
                             </Flex>
                         </ModalBody>
                         <ModalBody>
-                            <table
-                                className="table-auto border-collapse border-2 bg-white shadow-md my-4" {...getTableProps()}>
-                                <thead>
-                                {headerGroups.map(headerGroup => (
-                                    <tr className="border border-gray-300 border-dark" {...headerGroup.getHeaderGroupProps()}>
-                                        {headerGroup.headers.map(column => (
-                                            <th className="font-mono text-center text-lg text-gray-800 px-3 border-r-2" {...column.getHeaderProps()}>{column.render('Header')}</th>
-                                        ))}
-                                    </tr>
-                                ))}
-                                </thead>
-                                <tbody {...getTableBodyProps()}>
-                                {rows.map((row, i) => {
-                                    prepareRow(row);
-                                    return (
-                                        <tr {...row.getRowProps()}>
-                                            {row.cells.map(cell => {
-                                                return <td
-                                                    className="text-center border-2 text-indigo-600 text-wrap" {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                                            })}
+                            <Flex justifyContent="center" >
+                                <table
+                                    className="table-auto border-collapse border-2 bg-white shadow-md my-4" {...getTableProps()}>
+                                    <thead>
+                                    {headerGroups.map(headerGroup => (
+                                        <tr className="border border-gray-300 border-dark" {...headerGroup.getHeaderGroupProps()}>
+                                            {headerGroup.headers.map(column => (
+                                                <th className="font-mono text-center text-lg text-gray-800 px-3 border-r-2" {...column.getHeaderProps()}>{column.render('Header')}</th>
+                                            ))}
                                         </tr>
-                                    )
-                                })}
-                                </tbody>
-                            </table>
+                                    ))}
+                                    </thead>
+                                    <tbody {...getTableBodyProps()}>
+                                    {rows.map((row, i) => {
+                                        prepareRow(row);
+                                        return (
+                                            <tr {...row.getRowProps()}>
+                                                {row.cells.map(cell => {
+                                                    return <td
+                                                        className="text-center border-2 text-indigo-600 truncate break-all px-2 py-3" {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                                })}
+                                            </tr>
+                                        )
+                                    })}
+                                    </tbody>
+                                </table>
+                            </Flex>
                         </ModalBody>
                     </Box>
                     <ModalFooter>
