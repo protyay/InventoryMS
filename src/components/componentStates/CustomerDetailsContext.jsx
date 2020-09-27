@@ -8,7 +8,9 @@ export const CustomerDetailsProvider = (props) => {
         officeAddress: '',
         factoryAddress: '',
         gstin: '',
-        customerStatus:''
+        state:'',
+        customerStatus:'',
+        customerCode:''
     });
     return (
         <CustomerDetailsContext.Provider value={[customerDetailsContextState, setCustomerDetailsContextState]}>

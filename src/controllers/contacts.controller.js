@@ -8,11 +8,10 @@ const { default: validator } = require("validator");
 
 exports.create = async(req,res) =>{
     try{
-        const customer  = await Customer.findOne({ where:{customerCode : req.body.customerCode} })
+        const customer  = await Customer.findOne({ where:{customerCode : req.body.customerCode} });
         if(!customer){
             return res.status(404).send({success:false,error:{reason:'Invalid Customer!'}})
         }
-
         //to check duplicate contact number
         const contactNo = await Contacts.findOne({where : {contactNumber : req.body.contactNumber}})
         if(contactNo){
@@ -42,7 +41,7 @@ exports.findAll = async (req, res) => {
     try {
         const customer  = await Customer.findOne({ where:{customerCode : req.params.id} })
         if(!customer){
-            return res.status(404).send({success:false,error:{reason:'Invalid Customer!'}})
+            return res.status(400).send({success:false,error:{reason:'Invalid Customer!'}})
         }
       const customerId = customer.customerId
       const contacts = await Contacts.findAll({
