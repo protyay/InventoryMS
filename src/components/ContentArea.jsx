@@ -1,8 +1,9 @@
 import React, {useContext, useState} from 'react';
 import CustomerDetailsForm from './CustomerDetailsForm';
-import CustomerDataComponent from './CustomerDataComponent';
+import CustomerData from './CustomerData';
 import {AuthenticatedUserContext} from './componentStates/LoggedInUserState';
 import AlertComponent from "../customComponents/AlertComponent";
+import CustomerContactDetails from "./CustomerContactDetails";
 
 export default function ContentArea(props) {
 
@@ -11,7 +12,7 @@ export default function ContentArea(props) {
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertContentDetails, setAlertContentDetails] = useState({success: false, message: ''});
     const [reloadCustomerTable, setReloadCustomerTable] = useState(false);
-
+    const [displayCustomerContact, setDisplayCustomerContact] = useState(false);
     const {loggedInUserDetails} = useContext(AuthenticatedUserContext);
 
     const showAlert = (success, message) => {
@@ -30,9 +31,10 @@ export default function ContentArea(props) {
     return (
         <div className="w-2/3">
             <div>
-                <h1 className="text-3xl leading-10 font-medium text-blue-500 my-4">Welcome <span
-                    className="text-blue-700">{loggedInUserDetails.userName}</span></h1>
-                {alertVisible && <AlertComponent alertContentDetails={{message: alertContentDetails.message}}/>}
+                <h1 className="text-3xl leading-10 font-medium text-blue-700 my-4 font-bold">Welcome <span
+                    className="text-2xl text-blue-700 font-medium">{loggedInUserDetails.userName}</span></h1>
+                {alertVisible &&
+                <AlertComponent successType={alertContentDetails.success} message={alertContentDetails.message}/>}
             </div>
 
             {showCustomerDetailsModal &&
@@ -41,14 +43,17 @@ export default function ContentArea(props) {
                                       isEditAction={[isCustomerEditAction, setIsCustomerEditAction]}
                                       setShowCustomerDetailsModal={setShowCustomerDetailsModal}/>
             </div>}
+            {
+                displayCustomerContact && <CustomerContactDetails hideContactModal = {() => setDisplayCustomerContact(false)}/>
+            }
 
             <div className="flex justify-end">
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4"
                         onClick={() => setShowCustomerDetailsModal(true)}>Add Customer
                 </button>
             </div>
-            <CustomerDataComponent displayAlert={showAlert} initiateEditAction={initiateEditAction}
-                                   shouldReload={reloadCustomerTable}/>
+            <CustomerData displayAlert={showAlert} initiateEditAction={initiateEditAction}
+                          shouldReload={reloadCustomerTable} inititateContactEdit = {setDisplayCustomerContact}/>
         </div>
     )
 }

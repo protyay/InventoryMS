@@ -3,7 +3,7 @@ import {AiFillEdit} from 'react-icons/ai';
 import {useTable} from 'react-table';
 import {CustomerDetailsContext} from './componentStates/CustomerDetailsContext';
 
-export default function CustomerDataComponent(props) {
+export default function CustomerData(props) {
 
     const [tableData, setTableData] = useState([]);
     const [, setCurrentCustomerDetails] = useContext(CustomerDetailsContext);
@@ -12,10 +12,19 @@ export default function CustomerDataComponent(props) {
 
     const showCustomerDetails = async (e, cellProps) => {
         const customerData = cellProps.data[cellProps.cell.row.id];
-        // console.log('Clicked for Customer Data ', customerData);
+        console.log('Clicked for Customer Data ', customerData);
         setCurrentCustomerDetails(customerData);
         props.initiateEditAction();
     };
+
+    function showContactDetails(event, cellProps) {
+        // Retrieve the customer ID for the ROW and fetch the contact details
+        // Set the Contact Details in Context
+        const customerData = cellProps.data[cellProps.cell.row.id];
+        console.log('Clicked for Customer Data ', customerData);
+        setCurrentCustomerDetails(customerData);
+        props.inititateContactEdit(true);
+    }
 
     const columns = useMemo(() =>
             [
@@ -47,7 +56,7 @@ export default function CustomerDataComponent(props) {
                             Header: 'GSTIN',
                             accessor: 'gstin'
                         }
-                        
+
                     ]
                 },
                 {
@@ -69,7 +78,8 @@ export default function CustomerDataComponent(props) {
                         },
                         {
                             Header: 'Contacts',
-                            Cell: props => <a href="#" className="inline-block align-items-center"><AiFillEdit/></a>
+                            Cell: props => <a href="#" className="inline-block align-items-center"
+                                              onClick={event => showContactDetails(event, props)}><AiFillEdit/></a>
                         }
                     ]
 
@@ -111,31 +121,37 @@ export default function CustomerDataComponent(props) {
         <div className="flex justify-center shrink-0">
             <div className="px-2 py-20 w-full space-y-4 divide-y-4 divide-gray-300">
 
-                <h1 className="text-xl font-bold text-blue-500">Customer Records</h1>
-                <table className="table-auto border-collapse border-2 bg-white shadow-md" {...getTableProps()}>
-                    <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr className="border border-gray-100 border-darken-1" {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => (
-                                <th className="font-mono text-center text-lg text-purple-500 px-3 border-r-2" {...column.getHeaderProps()}>{column.render('Header')}</th>
-                            ))}
-                        </tr>
-                    ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                    {rows.map((row, i) => {
-                        prepareRow(row);
-                        return (
-                            <tr {...row.getRowProps()}>
-                                {row.cells.map(cell => {
-                                    return <td
-                                        className="text-center border-2 text-indigo-600 text-wrap" {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                                })}
+                <div className="my-4">
+                    <h2 className="font-semibold text-3xl font-bold text-gray-800 leading-8 tracking-tighter">Customer
+                        Records</h2>
+                </div>
+                <div>
+                    <table className="table-auto border-collapse border-2 bg-white shadow-md my-4" {...getTableProps()}>
+                        <thead>
+                        {headerGroups.map(headerGroup => (
+                            <tr className="border border-gray-300 border-dark" {...headerGroup.getHeaderGroupProps()}>
+                                {headerGroup.headers.map(column => (
+                                    <th className="font-mono text-center text-lg text-gray-800 px-3 border-r-2" {...column.getHeaderProps()}>{column.render('Header')}</th>
+                                ))}
                             </tr>
-                        )
-                    })}
-                    </tbody>
-                </table>
+                        ))}
+                        </thead>
+                        <tbody {...getTableBodyProps()}>
+                        {rows.map((row, i) => {
+                            prepareRow(row);
+                            return (
+                                <tr {...row.getRowProps()}>
+                                    {row.cells.map(cell => {
+                                        return <td
+                                            className="text-center border-2 text-indigo-600 text-wrap" {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                    })}
+                                </tr>
+                            )
+                        })}
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
 
         </div>
