@@ -14,6 +14,7 @@ export default function CustomerData(props) {
     const showCustomerDetails = async (e, cellProps) => {
         const customerData = cellProps.data[cellProps.cell.row.id];
         console.log('Edit initiated for Customer Data ', customerData);
+        // Tra
         setCurrentCustomerDetails(customerData);
         props.initiateEditAction();
     };
@@ -65,7 +66,7 @@ export default function CustomerData(props) {
                     columns: [
                         {
                             Header: 'Active',
-                            accessor: 'customerStatus'
+                            accessor: 'displayCustomerStatus'
                         }
                     ]
                 },
@@ -111,9 +112,9 @@ export default function CustomerData(props) {
             // Transform the response to SET Active & Inactive state based on Customer status value
             _.map(fetchAllCustomersResponse.data, response => {
                 if (response.customerStatus) {
-                    response.customerStatus = 'ACTIVE';
+                    response.displayCustomerStatus = 'ACTIVE';
                 } else {
-                    response.customerStatus = 'INACTIVE';
+                    response.displayCustomerStatus = 'INACTIVE';
                 }
                 return response;
             });

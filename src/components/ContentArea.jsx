@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import CustomerDetailsForm from './CustomerDetailsForm';
 import CustomerData from './CustomerData';
 import {AuthenticatedUserContext} from './componentStates/LoggedInUserState';
@@ -26,8 +26,16 @@ export default function ContentArea(props) {
         setIsCustomerEditAction(true);
         setShowCustomerDetailsModal(true);
     };
+    /**
+     * This effect would attach the handler that sets a timeout of 5seconds of clearing the error message
+     * component
+     */
+    useEffect(() => {
+        if (alertVisible) {
+            setTimeout(() => setAlertVisible(false), 3000);
+        }
+    }, [alertVisible]);
 
-    const dismissAlert = () => setAlertVisible(false);
     return (
         <div className="w-2/3">
             <div>
@@ -44,7 +52,8 @@ export default function ContentArea(props) {
                                       setShowCustomerDetailsModal={setShowCustomerDetailsModal}/>
             </div>}
             {
-                displayCustomerContact && <CustomerContactDetails hideContactModal = {() => setDisplayCustomerContact(false)}/>
+                displayCustomerContact &&
+                <CustomerContactDetails hideContactModal={() => setDisplayCustomerContact(false)}/>
             }
 
             <div className="flex justify-end">
@@ -53,7 +62,7 @@ export default function ContentArea(props) {
                 </button>
             </div>
             <CustomerData displayAlert={showAlert} initiateEditAction={initiateEditAction}
-                          shouldReload={reloadCustomerTable} inititateContactEdit = {setDisplayCustomerContact}/>
+                          shouldReload={reloadCustomerTable} inititateContactEdit={setDisplayCustomerContact}/>
         </div>
     )
 }
