@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {AiFillEdit} from 'react-icons/ai';
 import {useTable} from 'react-table';
 import {CustomerDetailsContext} from './componentStates/CustomerDetailsContext';
+import _ from 'lodash';
 
 export default function CustomerData(props) {
 
@@ -12,7 +13,8 @@ export default function CustomerData(props) {
 
     const showCustomerDetails = async (e, cellProps) => {
         const customerData = cellProps.data[cellProps.cell.row.id];
-        console.log('Clicked for Customer Data ', customerData);
+        console.log('Edit initiated for Customer Data ', customerData);
+        // Tra
         setCurrentCustomerDetails(customerData);
         props.initiateEditAction();
     };
@@ -64,7 +66,7 @@ export default function CustomerData(props) {
                     columns: [
                         {
                             Header: 'Active',
-                            accessor: 'customerStatus'
+                            accessor: 'displayCustomerStatus'
                         }
                     ]
                 },
@@ -105,8 +107,18 @@ export default function CustomerData(props) {
             }
         });
         const fetchAllCustomersResponse = await fetchAllCustomers.json();
-        console.log("Customer Fetched", fetchAllCustomersResponse);
+
         if (fetchAllCustomersResponse.success) {
+            // Transform the response to SET Active & Inactive state based on Customer status value
+            _.map(fetchAllCustomersResponse.data, response => {
+                if (response.customerStatus) {
+                    response.displayCustomerStatus = 'ACTIVE';
+                } else {
+                    response.displayCustomerStatus = 'INACTIVE';
+                }
+                return response;
+            });
+            console.log("Customer Fetched & Transformed", fetchAllCustomersResponse);
             setTableData(fetchAllCustomersResponse.data);
         } else {
             props.displayAlert('false', 'Error occurred. Please try again');

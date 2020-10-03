@@ -1,7 +1,8 @@
 import React from 'react';
-import {Alert, AlertDescription, AlertIcon, CloseButton} from "@chakra-ui/core";
+import {Alert, AlertDescription, AlertIcon} from "@chakra-ui/core";
 
 export default function AlertComponent(props) {
+
 
     return (
         <>
@@ -10,7 +11,6 @@ export default function AlertComponent(props) {
                 <AlertDescription p={2}>
                     {props.message}
                 </AlertDescription>
-                <CloseButton color={"green.600"} size={"md"} right={"8px"}/>
             </Alert>
         </>
     )
