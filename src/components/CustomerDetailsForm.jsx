@@ -21,7 +21,6 @@ import {
 } from "@chakra-ui/core";
 import FormErrorText from "./FormErrorText";
 
-//TODO: Introduce Spinner
 //TODO: Add custom validations
 export default function CustomerDetailsForm(props) {
 
@@ -43,7 +42,6 @@ export default function CustomerDetailsForm(props) {
     const [dataInvalid, setDataInvalid] = useState(false);
 
     const fetchStates = async () => {
-        setShowSpinner(true);
         const fetchOptions = getFetchOptions('GET');
         const statesMaster = await fetch('/api/states', fetchOptions);
         const stateMasterResponseJSON = await statesMaster.json();
@@ -60,16 +58,17 @@ export default function CustomerDetailsForm(props) {
         const stateIndex = _.find(stateResponse.data, stateInfo => stateInfo.stateCode === customerEditDetails.state);
         customerNecessaryEditDetails.state = stateIndex.stateName;
         setCustomerDetailsState({...customerNecessaryEditDetails});
-        setShowSpinner(false);
+
     };
 
     /**
      * We want to re-run this EFFECT after there's a change in the value of {isEditAction} props
      */
     useEffect(() => {
-        fetchStates();
+        setShowSpinner(true);
+        fetchStates().then(response => setShowSpinner(false));
         if (isEditAction) {
-            buildEditState();
+            buildEditState().then(response => setShowSpinner(false));
         }
     }, []);
 
@@ -220,8 +219,10 @@ export default function CustomerDetailsForm(props) {
                                                         ...customerDetailsState,
                                                         customerStatus: e.target.value
                                                     })}>
-                                                {<option value="true" defaultChecked>ACTIVE</option>}
-                                                {<option value="false">INACTIVE</option>}
+                                                {<option value="true"
+                                                         selected={customerDetailsState.customerStatus === 'ACTIVE'}>ACTIVE</option>}
+                                                {<option value="false"
+                                                         selected={customerDetailsState.customerStatus === 'INACTIVE'}>INACTIVE</option>}
                                             </Select>
                                         </FormControl>
                                     </Stack>
