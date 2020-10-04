@@ -214,15 +214,15 @@ export default function CustomerDetailsForm(props) {
                                         </FormControl>
                                         <FormControl>
                                             <FormLabel>Customer Status</FormLabel>
-                                            <Select size={"md"}
+                                            <Select size={"md"} value={customerDetailsState.customerStatus}
                                                     onChange={(e) => setCustomerDetailsState({
                                                         ...customerDetailsState,
                                                         customerStatus: e.target.value
                                                     })}>
                                                 {<option value="true"
-                                                         selected={customerDetailsState.customerStatus === 'ACTIVE'}>ACTIVE</option>}
+                                                >ACTIVE</option>}
                                                 {<option value="false"
-                                                         selected={customerDetailsState.customerStatus === 'INACTIVE'}>INACTIVE</option>}
+                                                >INACTIVE</option>}
                                             </Select>
                                         </FormControl>
                                     </Stack>
