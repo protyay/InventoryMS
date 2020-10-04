@@ -104,8 +104,8 @@ const CustomerContactDetails = props => {
                 <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader fontSize={"2xl"} fontWeight={"bold"} lineHeight={"tall"} color={"blue.300"}
-                                 borderBottom={"1px black"}
-                                 textAlign={"center"}>Contact Details</ModalHeader>
+                                 borderBottom={"1px black"} textAlign={"center"}>
+                                     Contact Details</ModalHeader>
                     {showAlertHeader &&
                     <Text marginTop={4} fontSize={"xl"} fontWeight={"bold"} lineHeight={"tall"} textAlign={"center"}
                           color={"green.300"}>
