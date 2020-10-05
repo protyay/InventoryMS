@@ -126,7 +126,7 @@ export default function CustomerDetailsForm(props) {
             <Modal isOpen={modalOpen}>
                 <ModalOverlay/>
                 {showSpinner ?
-                    <ModalContent><Spinner size={'xl'} color={"blue.500"} thickness={"4px"}/> </ModalContent> :
+                    <ModalContent><Spinner size={'xl'} color={"blue.500"} thickness={"4px"} /> </ModalContent> :
                     <ModalContent>
                         <ModalHeader fontSize={"2xl"} fontWeight={"bold"} lineHeight={"tall"} color={"blue.300"}
                                      textAlign={"center"}>{`${isEditAction ? 'Edit' : 'Add'} Customer`}</ModalHeader>

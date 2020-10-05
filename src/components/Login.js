@@ -57,7 +57,7 @@ const Login = props => {
 
             console.log('Response from Login API', loginResponse);
             if (!loginResponse.success) {
-                setErrorDetails({errorMessage: loginResponse.data.reason, hasError: true, alertOpen: true});
+                setErrorDetails({errorMessage: loginResponse.error.reason, hasError: true, alertOpen: true});
                 window.setTimeout(() => {
                     setErrorDetails({...errorDetails, alertOpen: false});
                 }, 3000)
@@ -125,12 +125,6 @@ const Login = props => {
                     </Box>
                     <Flex justifyContent="center" direction={"column"}>
                         <Button variant="solid" variantColor="blue" size="lg" onClick={handleLogin}>Login</Button>
-                        <Flex justifyContent="center" alignItems="center">
-                            <Link to="/signUp">
-                                <Button variant="solid" mt={5} size={"lg"} variantColor="green">SignUp</Button>
-                            </Link>
-                        </Flex>
-
                     </Flex>
                     {errorDetails.hasError && <Box className="my-3 mx-2">
                         <Alert status="error" isOpen={errorDetails.alertOpen}>

@@ -29,6 +29,7 @@ const CustomerContactDetails = props => {
     const [contactAlertMessage, setContactAlertMessage] = useState('');
     const [showAlertHeader, setShowAlertHeader] = useState(false);
     const [contactData, setContactData] = useState([]);
+    
 
     const autoHideModalAlertHeader = () => setTimeout(() => setShowAlertHeader(false), 5000);
     /**
@@ -100,12 +101,12 @@ const CustomerContactDetails = props => {
 
     return (
         <Flex>
-            <Modal isOpen={isModalOpen} isCentered={true}>
+            <Modal isOpen={isModalOpen} isCentered={true} size={"xl"}>
                 <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader fontSize={"2xl"} fontWeight={"bold"} lineHeight={"tall"} color={"blue.300"}
-                                 borderBottom={"1px black"}
-                                 textAlign={"center"}>Contact Details</ModalHeader>
+                                 borderBottom={"1px black"} textAlign={"center"}>
+                                     Contact Details</ModalHeader>
                     {showAlertHeader &&
                     <Text marginTop={4} fontSize={"xl"} fontWeight={"bold"} lineHeight={"tall"} textAlign={"center"}
                           color={"green.300"}>
@@ -168,7 +169,7 @@ const CustomerContactDetails = props => {
                                 <Button size={"md"} variantColor={"teal"} onClick={submitContactDetails}>Save</Button>
                             </Flex>
                         </ModalBody>
-                        <ModalBody>
+                        <ModalBody overflowY={"auto"} height={"200px"}>
                             <Flex justifyContent="center">
                                 <table
                                     className="table-auto border-collapse border-2 bg-white shadow-md my-4" {...getTableProps()}>
