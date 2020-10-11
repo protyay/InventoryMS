@@ -135,7 +135,7 @@ export default function CustomerData(props) {
     }, [shouldReload]);
 
     return (
-        <div className="flex justify-center shrink-0">
+        <div className="flex justify-center">
             <div className="px-2 py-20 w-full space-y-4 divide-y-4 divide-gray-300">
 
                 <div className="my-4">
