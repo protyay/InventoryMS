@@ -6,7 +6,8 @@ import AlertComponent from "../customComponents/AlertComponent";
 import CustomerContactDetails from "./CustomerContactDetails";
 import {Button} from "@chakra-ui/core";
 import ActionAlertDialog from "../customComponents/ActionAlertDialog";
-import {useHistory} from 'react-router';
+import {useHistory} from 'react-router-dom';
+import ServiceReqDashboard from "./ServiceReqDashboard";
 
 export default function ContentArea(props) {
 
@@ -18,6 +19,7 @@ export default function ContentArea(props) {
     const [displayCustomerContact, setDisplayCustomerContact] = useState(false);
     const [displayLogoutAlertDialog, setDisplayLogoutAlertDialog] = useState(false);
     const {loggedInUserDetails} = useContext(AuthenticatedUserContext);
+    const [viewServiceReqDashboard, setViewServiceReqDashboard] = useState(false);
     const routeHistory = useHistory();
 
     const showAlert = (success, message) => {
@@ -79,7 +81,11 @@ export default function ContentArea(props) {
                 </button>
             </div>
             <CustomerData displayAlert={showAlert} initiateEditAction={initiateEditAction}
-                          shouldReload={reloadCustomerTable} inititateContactEdit={setDisplayCustomerContact}/>
+                          shouldReload={reloadCustomerTable} inititateContactEdit={setDisplayCustomerContact}
+                          openServiceReqDash={() => setViewServiceReqDashboard(true)}/>
+
+            {viewServiceReqDashboard &&
+            <ServiceReqDashboard hideServiceReqDash={() => setViewServiceReqDashboard(false)}/>}
         </div>
     )
 }

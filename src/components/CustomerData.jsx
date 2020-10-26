@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useMemo, useState} from 'react';
-import {AiFillContacts, AiFillCustomerService, AiFillEdit, AiFillMessage, AiOutlineCustomerService} from 'react-icons/ai';
+import {AiFillContacts, AiFillEdit, AiFillMessage} from 'react-icons/ai';
 import {useTable} from 'react-table';
 import {CustomerDetailsContext} from './componentStates/CustomerDetailsContext';
 import _ from 'lodash';
@@ -26,6 +26,10 @@ export default function CustomerData(props) {
         console.log('Clicked for Customer Data ', customerData);
         setCurrentCustomerDetails(customerData);
         props.inititateContactEdit(true);
+    }
+
+    function redirectServiceReqDash(e, cellProps) {
+        props.openServiceReqDash();
     }
 
     const columns = useMemo(() =>
@@ -86,7 +90,8 @@ export default function CustomerData(props) {
                         {
                             Header: 'Service Requests',
                             Cell: props => <a href="#" className="inline-block align-items-center"
-                                              ><AiFillMessage/></a>
+                                              onClick={(e) => redirectServiceReqDash(e, props)}
+                            ><AiFillMessage/></a>
                         }
                     ]
 
