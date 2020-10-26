@@ -10,7 +10,7 @@ import {
     ModalOverlay,
     Text
 } from "@chakra-ui/core";
-import TableComponent from "./componentStates/TableComponent";
+import TableComponent from "../customComponents/TableComponent";
 import {AiFillEdit, AiFillRead} from "react-icons/ai";
 
 const ServiceReqDashboard = (props) => {
