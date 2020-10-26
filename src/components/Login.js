@@ -37,7 +37,7 @@ const Login = props => {
 
 
     useEffect(() => {
-        if (!_.isEmpty(props.location.state)) {
+        if (!_.isEmpty(props?.location?.state)) {
             setRegistrationAlertMessage(true);
         }
     }, []);
